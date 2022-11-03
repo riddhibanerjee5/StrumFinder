@@ -11,7 +11,8 @@ root.geometry("500x400")
 
 
 def play():
-    playsound('1.mp3')
+    # playsound('1.mp3')
+    playsound('2.wav')
 
 
 # title on the screen you can modify it
