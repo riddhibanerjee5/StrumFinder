@@ -8,7 +8,7 @@ import pygame
 pygame.mixer.init()
 
 root = Tk()
-root.title('Strum Finder')  # giving the title for our window
+root.title('Strum Finder')
 root.geometry("1000x1000")
 root.configure(bg="light blue")
 
