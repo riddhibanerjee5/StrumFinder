@@ -7,8 +7,6 @@ import pygame
 
 pygame.mixer.init()
 
-# testing
-
 root = Tk()
 root.title('Strum Finder')
 root.geometry("1000x1000")
@@ -25,6 +23,8 @@ label = Label(frame, image=sound_wave_img)
 label.pack()
 
 ####################################
+
+# only wav files for now
 
 
 def openFile():
