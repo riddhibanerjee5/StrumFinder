@@ -1,3 +1,16 @@
+""" Metronome class used to connect serially to a microcontroller that acts as a metronome.
+
+To connect serially, the data port must be specified. Two ports will be seen when connecting
+the microcontroller which is the data port and the REPL port. Trial and error may have to 
+be used to see when one is which. For example, if my REPL port is COM6 and my data port is COM3, 
+I connect with COM3
+
+set_bpm, play, and pause all send commands to the microcontroller. set_bpm sets the speed of 
+the metronome, play starts the metronome, and pause stops the metronome. set_bpm must be 
+done before sending play or pause. calculate_bpm is used to calculate the bpm from a song
+and is made to be used for set_bpm.
+"""
+
 import sys
 import serial
 import time
@@ -8,14 +21,16 @@ from numpy import mean, median, diff
 
 class metronome:
     # constructor
-    def __init__(self, port, filename=None, bpm=None):
+    # port and filename are strings, bpm is a float
+    # filename and bpm are optional parameters 
+    def __init__(self, port, filename=None, bpm=-1):
         self.port = port                                        # port to communicate on
         self.serial_connection = serial.Serial(port, 115200)    # serial connection to microcontroller
         self.filename = filename                                # file to calculate bpm from
         self.bpm = bpm                                          # current bpm of metronome
         
     # set the metronome speed
-    def set_metronome(self, bpm):
+    def set_bpm(self, bpm):
         # bpm valid check
         if bpm < 0:
             print('Invalid bpm')
@@ -27,11 +42,11 @@ class metronome:
         self.serial_connection.write(input)
 
     # play the metronome
-    def play_metronome(self):
+    def play(self):
         self.serial_connection.write(b'play\r\n')
 
     # pause the metronome
-    def pause_metronome(self):
+    def pause(self):
         self.serial_connection.write(b'pause\r\n')
 
     # set the serial connection to the microcontroller
@@ -39,6 +54,8 @@ class metronome:
         self.serial_connection = serial.Serial(port, 115200)
 
     # calculate bpm from a .wav file
+    # filename is an opional parameter, it is only needed
+    # if a file was not given when using the constructor
     def calculate_bpm(self, filename=None):
         # set the file to the one in the contructor if given
         if filename != None:
@@ -86,4 +103,3 @@ class metronome:
         bpm = median(bpms)
 
         return bpm
-
