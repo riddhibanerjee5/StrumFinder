@@ -7,6 +7,8 @@ import pygame
 
 pygame.mixer.init()
 
+# testing
+
 root = Tk()
 root.title('Strum Finder')
 root.geometry("1000x1000")
