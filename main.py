@@ -24,7 +24,7 @@ label.pack()
 
 ####################################
 
-# only wav files for now
+# only wav files
 
 
 def openFile():
