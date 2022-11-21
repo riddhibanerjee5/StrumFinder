@@ -17,7 +17,8 @@ def stft(n, t, w, x, M, W, Fs):
         w.append((2*math.pi*i)/float(W))
     return X
 
-def findMaxFreq(X,Fs):
+
+def findMaxFreq(X, Fs):
     freqs = []
     for i in range(len(X)):
         Xmax = 0.0
@@ -30,11 +31,13 @@ def findMaxFreq(X,Fs):
         freqs.append(fmax)
     return freqs
 
+
 def convertToNote(f):
     h = round(12*log2(f/C0))
     octave = h // 12
     n = h % 12
     return name[n] + str(octave)
+
 
 def result():
     for i in range(len(X)):
@@ -47,16 +50,15 @@ def result():
 #x = [0.00, 0.59, 0.95, 0.95, 0.59, 0.00, -0.59, -0.95, -0.95, -0.59, 0.00, 0.95, 0.59, -0.59, -0.95, 0.00, 0.95, 0.59, -0.59, -0.95, 0.00, 0.95, -0.59, -0.59, 0.95, 0.00, -0.95, 0.59, 0.59, -0.95, 0.00, 0.59, -0.95, 0.95, -0.59, 0.00, 0.59, -0.95, 0.95, -0.59, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, -0.59, 0.95, -0.95, 0.59, 0.00, -0.59, 0.95, -0.95, 0.59, 0.00, -0.95, 0.59, 0.59, -0.95, 0.00, 0.95, -0.59, -0.59, 0.95, 0.00, -0.95, -0.59, 0.59, 0.95, 0.00, -0.95, -0.59, 0.59, 0.95, 0.00, -0.59, -0.95, -0.95, -0.59, 0.00, 0.59, 0.95, 0.95, 0.59, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00]
 #x = [0.00, 0.82, -1.33, 1.33, -0.82,  0.00,  0.82, -1.33,  1.33, -0.82,  0.00,  0.82, -1.33,  1.33, -0.82,  0.00,  0.82, -1.33,  1.33, -0.82,  0.00,  1.13,  0.70, -0.70, -1.13,  0.00,  1.13,  0.70, -0.70, -1.13,  0.00,  1.13,  0.70, -0.70, -1.13,  0.00,  1.13,  0.70, -0.70, -1.13,  0.00,  2.41,  3.89,  3.89,  2.41,  0.00, -2.41, -3.89, -3.89, -2.41,  0.00,  2.41,  3.89,  3.89,  2.41,  0.00, -2.41, -3.89, -3.89, -2.41,  0.00,  1.28, -0.79, -0.79,  1.28,  0.00, -1.28,  0.79,  0.79, -1.28,  0.00,  1.28, -0.79, -0.79,  1.28,  0.00, -1.28,  0.79,  0.79, -1.28]
 
-#x = []
 #file = open("chirp.txt")
-#while True:
+# while True:
 #    line = file.readline()
 #    if not line:
 #        break
 #    x.append(float(line))
-#file.close()
+# file.close()
 
-#W = 100
+#W = 5000
 #Fs = 44100.0
 n = []
 t = []
@@ -70,12 +72,12 @@ length = len(x[1])/Fs             # length in seconds
 M = math.floor(length*bps*16.0)   # sixteenth notes
 W = math.floor(len(x[1])/M)
 
-X = stft(n,t,w,x[1],M,W,Fs)
+X = stft(n, t, w, x[1], M, W, Fs)
 
 # find max frequencies
 for i in range(len(X)):
-    X[i]=abs(X[i])
-freqs = findMaxFreq(X,Fs)
+    X[i] = abs(X[i])
+freqs = findMaxFreq(X, Fs)
 
 # convert frequencies to notes (pitch)
 A4 = 440
@@ -96,7 +98,7 @@ for i in range(len(notes)):
     file.write("\n")
 file.close()
 
-plt.pcolormesh(X,cmap='inferno')
+plt.pcolormesh(X, cmap='inferno')
 plt.colorbar()
 plt.xlabel("Frequency")
 plt.ylabel("Time")

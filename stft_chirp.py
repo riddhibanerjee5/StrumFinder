@@ -17,12 +17,14 @@ def stft(n, t, w, x, M, W, Fs):
         w.append((2*math.pi*i)/float(W))
     return X
 
+
 def result():
     for i in range(len(X)):
         for j in range(len(X[i])):
             if (abs(X[i][j]) < 0.0000001):
                 X[i][j] = 0
             print("X[", i, "][", j, "]: ", X[i][j])
+
 
 x = []
 file = open("chirp.txt")
@@ -41,14 +43,16 @@ w = []
 
 M = math.floor(len(x)/W)
 
-X = stft(n,t,w,x,M,W,Fs)
+X = stft(n, t, w, x, M, W, Fs)
 
 for i in range(len(X)):
-    X[i]=abs(X[i])
+    X[i] = abs(X[i])
 
-plt.pcolormesh(X,cmap='inferno')
-plt.colorbar()
-plt.xlabel("Frequency")
-plt.ylabel("Time")
-plt.title("Short Time Fourier Transform")
-plt.show()
+
+def show_graph():
+    plt.pcolormesh(X, cmap='inferno')
+    plt.colorbar()
+    plt.xlabel("Frequency")
+    plt.ylabel("Time")
+    plt.title("Short Time Fourier Transform")
+    plt.show()
