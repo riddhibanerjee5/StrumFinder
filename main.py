@@ -71,6 +71,7 @@ def openNotes():
     generateNotes(soundFile)
     startfile("notes.txt")
 
+
 def serial():
     port = simpledialog.askstring(title="Select Port",
                                   prompt="Port:")
@@ -88,11 +89,7 @@ def pause_metronome():
         metro.pause()
 
 
-
-
 ##################################################################################
-
-
 ##################### ORIGINAL SONG ####################################
 original_song_label = Label(root, text="Original Song", font=(
     "Helvetica", 25, "bold"), bg=colors["white"], fg=colors["orangeSoda"])
@@ -155,7 +152,7 @@ start_metronome_button.place(y=675, x=720)
 
 stop_metronome_button = Button(root, text="Stop", font=(
     "Helvetica", 16), relief=GROOVE, command=pause_metronome, bg=colors["mustard"])
-stop_metronome_button.place(y=675, x=1300)
+stop_metronome_button.place(y=675, x=1320)
 #########################################################################
 
 root.mainloop()
