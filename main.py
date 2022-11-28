@@ -1,3 +1,4 @@
+from metronome import metronome
 from playsound import playsound
 from os import startfile
 from tkinter import *
@@ -17,6 +18,8 @@ root.configure(bg="light blue")
 title = Label(root, text="Strum Finder", bd=9, relief=GROOVE,
               font=("times new roman", 50, "bold"), bg="light blue", fg="blue")
 title.pack(side=TOP, fill=X)
+
+metro = metronome()
 
 ############################### Images ################################
 frame = Frame(root, width=50, height=50)
@@ -44,7 +47,7 @@ def openFile():
 def play():
     if soundFile:
         playSound = pygame.mixer.Sound(soundFile)
-        playSound.play(0, 5000)
+        playSound.play()
 
 
 def stop():
@@ -54,11 +57,23 @@ def stop():
 def openNotes():
     generateNotes(soundFile)
     startfile("notes.txt")
+
+def serial():
+    metro.set_serial("COM3")
+
+def start_metronome():
+    metro.set_bpm(metro.calculate_bpm(soundFile))
+    metro.play()
+
+def pause_metronome():
+    metro.pause()
+
+
 ##################################################################################
 
 
 ##################### ORIGINAL SONG ####################################
-original_song_label = Label(root, text="Original Song: ", font=(
+original_song_label = Label(root, text="Original Song", font=(
     "Helvetica", 25, "bold"), bg="light blue")
 original_song_label.place(y=120, x=90)
 
@@ -74,6 +89,22 @@ play_button.place(y=200, x=700)
 stop_button = Button(root, text="Stop Song", font=(
     "Helvetica", 16), relief=GROOVE, command=stop, bg="red")
 stop_button.place(y=200, x=1300)
+
+metronome_label = Label(root, text="Metronome", font=(
+    "Helvetica", 25, "bold"), bg="light blue")
+metronome_label.place(y=700, x=90)
+
+select_serial_port_button = Button(root, text="Select Port", font=(
+    "Helvetica", 16), relief=GROOVE, command=serial, bg="red")
+select_serial_port_button.place(y=775, x=100)
+
+start_metronome_button = Button(root, text="Start", font=(
+    "Helvetica", 16), relief=GROOVE, command=start_metronome, bg="red")
+start_metronome_button.place(y=775, x=700)
+
+stop_metronome_button = Button(root, text="Stop", font=(
+    "Helvetica", 16), relief=GROOVE, command=pause_metronome, bg="red")
+stop_metronome_button.place(y=775, x=1300)
 #########################################################################
 
 
