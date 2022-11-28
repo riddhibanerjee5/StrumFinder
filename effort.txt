@@ -6,7 +6,7 @@ Kendall
  - 9/1 & 9/2: researched serial communication and made program in 
               and made a program in CircuitPython to be able to 
               read and write to a file. 
-	      (8 hrs)
+	      (7 hrs)
  - 9/15 & 9/16: researched MIDI to find out if notes can easily be read in it 
 		(4 hrs)
  - 9/17: researched MIDI to see how to write a MIDI file and if the bpm could
@@ -17,22 +17,22 @@ Kendall
          reinstalled python a ton because it would not work with installing
          new libraries anymore. found the library aubio to calculate the bpm of a song. 
 	 worked with different examples of aubio to figure out how to use it. 
-	 (6 hrs)
+	 (5 hrs)
  - 9/19: researched the Pico hardware to find out if a speaker could be used with it.
          bought a speaker for the Pico. Started to send data serially to 
          the Pico. Figured out what format data had to be in for the Pico to understand
 	 it. 
-	 (4 hrs)
+	 (5 hrs)
  - 9/20: got a piezo because the Pico does not have a DAC so I could not use a 
          speaker. Wired up the piezo and used an example to see if it worked. 
 	 made the commands to work with the Pico to set, start, and stop the 
-         piezo. 
-	 (5 hrs)
- - 9/21: made the metronome class to abstract the serial commands for the Pico away
-         from the GUI. tested the metronome class thoroughly. 
-	 (3 hrs)
+         piezo. made the metronome class to abstract the serial commands for the Pico away
+         from the GUI.
+	 (8 hrs)
+ - 9/21: updated and tested the metronome class.
+	 (1 hr)
  - 9/27: wrote the prior art section of the report. 
-	 (.75 hr)
+	 (1 hr)
  - 9/28: integrated the metronome into the GUI. created a popup window in the GUI to
 	 get the port. wrote all the parts of the report that had to do with the 
          metronome and wrote my part of Empirical Evidence. 
