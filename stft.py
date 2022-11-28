@@ -49,20 +49,6 @@ def result(X):
             print("X[", i, "][", j, "]: ", X[i][j])
 
 
-#x = [0.00, 0.59, 0.95, 0.95, 0.59, 0.00, -0.59, -0.95, -0.95, -0.59, 0.00, 0.95, 0.59, -0.59, -0.95, 0.00, 0.95, 0.59, -0.59, -0.95, 0.00, 0.95, -0.59, -0.59, 0.95, 0.00, -0.95, 0.59, 0.59, -0.95, 0.00, 0.59, -0.95, 0.95, -0.59, 0.00, 0.59, -0.95, 0.95, -0.59, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, -0.59, 0.95, -0.95, 0.59, 0.00, -0.59, 0.95, -0.95, 0.59, 0.00, -0.95, 0.59, 0.59, -0.95, 0.00, 0.95, -0.59, -0.59, 0.95, 0.00, -0.95, -0.59, 0.59, 0.95, 0.00, -0.95, -0.59, 0.59, 0.95, 0.00, -0.59, -0.95, -0.95, -0.59, 0.00, 0.59, 0.95, 0.95, 0.59, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00]
-#x = [0.00, 0.82, -1.33, 1.33, -0.82,  0.00,  0.82, -1.33,  1.33, -0.82,  0.00,  0.82, -1.33,  1.33, -0.82,  0.00,  0.82, -1.33,  1.33, -0.82,  0.00,  1.13,  0.70, -0.70, -1.13,  0.00,  1.13,  0.70, -0.70, -1.13,  0.00,  1.13,  0.70, -0.70, -1.13,  0.00,  1.13,  0.70, -0.70, -1.13,  0.00,  2.41,  3.89,  3.89,  2.41,  0.00, -2.41, -3.89, -3.89, -2.41,  0.00,  2.41,  3.89,  3.89,  2.41,  0.00, -2.41, -3.89, -3.89, -2.41,  0.00,  1.28, -0.79, -0.79,  1.28,  0.00, -1.28,  0.79,  0.79, -1.28,  0.00,  1.28, -0.79, -0.79,  1.28,  0.00, -1.28,  0.79,  0.79, -1.28]
-
-#file = open("chirp.txt")
-# while True:
-#    line = file.readline()
-#    if not line:
-#        break
-#    x.append(float(line))
-# file.close()
-
-#W = 5000
-#Fs = 44100.0
-
 def generateNotes(file):
     n = []
     t = []
@@ -71,12 +57,12 @@ def generateNotes(file):
     x, Fs = sf.read(file)
     x = x.transpose()
     # total sixteenth notes (time divisions) = length*bps*16
-    bps = 85.0/60.0                  # beats per second 139
-    length = len(x[1])/Fs             # length in seconds
-    M = math.floor(length*bps*16.0)   # sixteenth notes
-    W = math.floor(len(x[1])/M)
+    bps = 85.0/60.0                  # beats per second (139 gods) (85 smiles) (85 priestess)
+    length = len(x[0])/Fs             # length in seconds
+    M = math.floor(length*bps*4.0)   # sixteenth notes
+    W = math.floor(len(x[0])/M)
 
-    X = stft(n, t, w, x[1], M, W, Fs)
+    X = stft(n, t, w, x[0], M, W, Fs)
 
     # find max frequencies
     for i in range(len(X)):
@@ -95,7 +81,7 @@ def generateNotes(file):
             notes.append("N/A")
 
     file = open("notes.txt", 'w')
-    file.write(file.name)
+    file.write("Time                        Note\n")
     file.write("\n")
     for i in range(len(notes)):
         file.write(str(t[i]))
