@@ -25,15 +25,13 @@ class metronome:
     # filename and bpm are optional parameters 
     def __init__(self, port=None, filename=None, bpm=-1):
         self.port = port                                        # port to communicate on
-        self.serial_connection = serial.Serial(port, 115200)    # serial connection to microcontroller
+        self.serial_connection = serial.Serial(self.port, 115200)    # serial connection to microcontroller
         self.filename = filename                                # file to calculate bpm from
         self.bpm = bpm                                          # current bpm of metronome
         
     # set the metronome speed
     def set_bpm(self, bpm):
         # bpm valid check
-        if self.port == None:
-            print('No port specified')
         if bpm < 0:
             print('Invalid bpm')
             return
@@ -45,16 +43,10 @@ class metronome:
 
     # play the metronome
     def play(self):
-        if self.port == None:
-            print('No port specified')
-
         self.serial_connection.write(b'play\r\n')
 
     # pause the metronome
     def pause(self):
-        if self.port == None:
-            print('No port specified')
-
         self.serial_connection.write(b'pause\r\n')
 
     # set the serial connection to the microcontroller
@@ -110,7 +102,6 @@ class metronome:
         # calculate bpm
         bpms = 60./ diff(beats)
         bpm = median(bpms)
-        print(bpm)
 
         return bpm
 

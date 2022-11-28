@@ -3,7 +3,7 @@ from playsound import playsound
 from os import startfile
 from tkinter import *
 import multiprocessing
-from tkinter import filedialog
+from tkinter import filedialog, simpledialog
 from PIL import ImageTk, Image
 import pygame
 from stft_chirp import show_graph
@@ -71,18 +71,23 @@ def openNotes():
     generateNotes(soundFile)
     startfile("notes.txt")
 
-
 def serial():
-    metro.set_serial("COM9")
+    port = simpledialog.askstring(title="Select Port",
+                                  prompt="Port:")
+    metro.set_serial(port)
 
 
 def start_metronome():
-    metro.set_bpm(metro.calculate_bpm(soundFile))
-    metro.play()
+    if metro != None:
+        metro.set_bpm(metro.calculate_bpm(soundFile))
+        metro.play()
 
 
 def pause_metronome():
-    metro.pause()
+    if metro != None:
+        metro.pause()
+
+
 
 
 ##################################################################################
