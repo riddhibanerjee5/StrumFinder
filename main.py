@@ -1,10 +1,12 @@
 from playsound import playsound
+from os import startfile
 from tkinter import *
 import multiprocessing
 from tkinter import filedialog
 from PIL import ImageTk, Image
 import pygame
 from stft_chirp import show_graph
+from stft import generateNotes
 pygame.mixer.init()
 
 root = Tk()
@@ -47,6 +49,11 @@ def play():
 
 def stop():
     pygame.mixer.pause()
+
+
+def openNotes():
+    generateNotes(soundFile)
+    startfile("notes.txt")
 ##################################################################################
 
 
@@ -79,6 +86,10 @@ strum_pattern_label.place(y=300, x=90)
 generate_patterns_button = Button(root, text="Generate Strum Patterns", font=(
     "Helvetica", 16), relief=GROOVE, bg="yellow")
 generate_patterns_button.place(y=380, x=100)
+
+generate_patterns_button = Button(root, text="Generate Notes", font=(
+    "Helvetica", 16), relief=GROOVE, command=openNotes, bg="yellow")
+generate_patterns_button.place(y=480, x=100)
 
 # TO DO: Add functionality on press
 start_button = Button(root, text="Start", font=(

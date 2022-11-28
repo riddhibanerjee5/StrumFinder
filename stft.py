@@ -32,14 +32,16 @@ def findMaxFreq(X, Fs):
     return freqs
 
 
-def convertToNote(f):
+def convertToNote(f, name):
+    A4 = 440
+    C0 = A4*pow(2, -4.75)
     h = round(12*log2(f/C0))
     octave = h // 12
     n = h % 12
     return name[n] + str(octave)
 
 
-def result():
+def result(X):
     for i in range(len(X)):
         for j in range(len(X[i])):
             if (abs(X[i][j]) < 0.0000001):
@@ -60,47 +62,53 @@ def result():
 
 #W = 5000
 #Fs = 44100.0
-n = []
-t = []
-w = []
 
-x, Fs = sf.read('smiles.wav')
-x = x.transpose()
-# total sixteenth notes (time divisions) = length*bps*16
-bps = 85.0/60.0                  # beats per second 139
-length = len(x[1])/Fs             # length in seconds
-M = math.floor(length*bps*16.0)   # sixteenth notes
-W = math.floor(len(x[1])/M)
+def generateNotes(file):
+    n = []
+    t = []
+    w = []
 
-X = stft(n, t, w, x[1], M, W, Fs)
+    x, Fs = sf.read(file)
+    x = x.transpose()
+    # total sixteenth notes (time divisions) = length*bps*16
+    bps = 85.0/60.0                  # beats per second 139
+    length = len(x[1])/Fs             # length in seconds
+    M = math.floor(length*bps*16.0)   # sixteenth notes
+    W = math.floor(len(x[1])/M)
 
-# find max frequencies
-for i in range(len(X)):
-    X[i] = abs(X[i])
-freqs = findMaxFreq(X, Fs)
+    X = stft(n, t, w, x[1], M, W, Fs)
 
-# convert frequencies to notes (pitch)
-A4 = 440
-C0 = A4*pow(2, -4.75)
-name = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
-notes = []
-for i in range(len(freqs)):
-    if freqs[i] > 0:
-        notes.append(convertToNote(freqs[i]))
-    else:
-        notes.append("N/A")
+    # find max frequencies
+    for i in range(len(X)):
+        X[i] = abs(X[i])
+    freqs = findMaxFreq(X, Fs)
 
-file = open("notes.txt", 'w')
-for i in range(len(notes)):
-    file.write(str(t[i]))
-    file.write("            ")
-    file.write(notes[i])
+    # convert frequencies to notes (pitch)
+    A4 = 440
+    C0 = A4*pow(2, -4.75)
+    name = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
+    notes = []
+    for i in range(len(freqs)):
+        if freqs[i] > 0:
+            notes.append(convertToNote(freqs[i], name))
+        else:
+            notes.append("N/A")
+
+    file = open("notes.txt", 'w')
+    file.write(file.name)
     file.write("\n")
-file.close()
+    for i in range(len(notes)):
+        file.write(str(t[i]))
+        file.write("            ")
+        file.write(notes[i])
+        file.write("\n")
+    file.close()
 
-plt.pcolormesh(X, cmap='inferno')
-plt.colorbar()
-plt.xlabel("Frequency")
-plt.ylabel("Time")
-plt.title("Short Time Fourier Transform")
-plt.show()
+
+def graph(X):
+    plt.pcolormesh(X, cmap='inferno')
+    plt.colorbar()
+    plt.xlabel("Frequency")
+    plt.ylabel("Time")
+    plt.title("Short Time Fourier Transform")
+    plt.show()
