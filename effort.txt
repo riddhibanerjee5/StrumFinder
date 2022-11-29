@@ -1,39 +1,48 @@
 Cyrus
+ - 10/31: research on STFT and transcription of music, Klapuri paper (2 hrs)
+ - 11/2: STFT implemenation in C++ (3 hours)
+ - 11/4: meeting with Dr. Harley, formulation of DSP plan, structure (3 hrs)
+ - 11/7: STFT in Python (2 hours)
+ - 11/10: reading wav files, creating STFT colormap graphs (2 hours)
+ - 11/13: transcribe STFT max frequencies into notes (10 hours)
+ - 11/10-11/15: testing STFT max frequency implementation (10 hours)
+ - 11/21: create separate STFT chirp example (1 hour)
+ - 11/28: working with more wav files, tuning implementation (2 hours)
 
 Riddhi
 
 Kendall
- - 9/1 & 9/2: researched serial communication and made program in 
+ - 11/1 & 11/2: researched serial communication and made program in 
               and made a program in CircuitPython to be able to 
               read and write to a file. 
 	      (7 hrs)
- - 9/15 & 9/16: researched MIDI to find out if notes can easily be read in it 
+ - 11/15 & 11/16: researched MIDI to find out if notes can easily be read in it 
 		(4 hrs)
- - 9/17: researched MIDI to see how to write a MIDI file and if the bpm could
+ - 11/17: researched MIDI to see how to write a MIDI file and if the bpm could
          be found in the file easily. researched CircuitPython libraries to 
 	 see if they could be used to read and write MIDI files 
 	 (4 hrs)
- - 9/18: researched libraries to calculate the BPM from a song. uninstalled and 
+ - 11/18: researched libraries to calculate the BPM from a song. uninstalled and 
          reinstalled python a ton because it would not work with installing
          new libraries anymore. found the library aubio to calculate the bpm of a song. 
 	 worked with different examples of aubio to figure out how to use it. 
 	 (5 hrs)
- - 9/19: researched the Pico hardware to find out if a speaker could be used with it.
+ - 11/19: researched the Pico hardware to find out if a speaker could be used with it.
          bought a speaker for the Pico. Started to send data serially to 
          the Pico. Figured out what format data had to be in for the Pico to understand
 	 it. 
 	 (5 hrs)
- - 9/20: got a piezo because the Pico does not have a DAC so I could not use a 
+ - 11/20: got a piezo because the Pico does not have a DAC so I could not use a 
          speaker. Wired up the piezo and used an example to see if it worked. 
 	 made the commands to work with the Pico to set, start, and stop the 
          piezo. made the metronome class to abstract the serial commands for the Pico away
          from the GUI.
 	 (8 hrs)
- - 9/21: updated and tested the metronome class.
+ - 11/21: updated and tested the metronome class.
 	 (1 hr)
- - 9/27: wrote the prior art section of the report. 
+ - 11/27: wrote the prior art section of the report. 
 	 (1 hr)
- - 9/28: integrated the metronome into the GUI. created a popup window in the GUI to
+ - 11/28: integrated the metronome into the GUI. created a popup window in the GUI to
 	 get the port. wrote all the parts of the report that had to do with the 
          metronome and wrote my part of Empirical Evidence. 
 	 (6 hrs)
