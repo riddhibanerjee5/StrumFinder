@@ -2,6 +2,7 @@
 
 Build Instructions:
   python main.py
+  Hardware cannot be tested with, but running the above will open the GUI to be interacted with the user.
 
 Build Instructions for Persistent State:
   Download the adafruit-circuitpython-raspberry_pi_pico-en_US-7.3.3.uf2 file. Reboot the Raspberry Pi Pico to flash the uf2 file.
