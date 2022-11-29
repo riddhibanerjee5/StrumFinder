@@ -10,6 +10,33 @@ Cyrus
  - 11/28: working with more wav files, tuning implementation (2 hours)
 
 Riddhi
+ - 10/2: Researched different GUI libraries/frameworks and languages to use. Started off looking at
+		C++ Qt.
+		(5 hrs)
+ - 10/5: Read and watched videos about Qt and setting up a project: https://doc.qt.io/
+		 Started setting up the project in Qt before realizing the complexity and requirements
+		 were too much for our project.
+		 (7 hrs)
+ - 10/15: Conducted further research on GUIs and talked with the team to decide that Python would be the
+		  best language to work with. Narrowed down frameworks to Python and decided on using Tkinter.
+		  (3 hrs)
+ - 10/20-22: Read through Tkinter documents: https://docs.python.org/3/library/tkinter.html
+		     and watched a video on initializing a Tkinter project: https://www.youtube.com/watch?v=YXPyB4XeYLA&t=117s
+			 (7 hrs)
+ - 11/2: Created GitHub repo and initialized the main GUI. Worked on being able to play a wav file
+			(2 hrs)
+ - 11/16: Add functionality to access user's file explorer and select a sound file. Created buttons to then play/pause
+		this sound file.
+			(3 hrs)
+ - 11/21: Organize GUI into three different sections: Original Song, Strum Pattern, and Metronome. Added buttons for displaying
+		strum patterns, but the actual functionality is a stretch goal for next semester. Added a button to show the Fourier Transform
+		graph of the file passed in from the file explorer.
+			(3 hrs)
+ - 11/28: Added a button to display the notes of the song the user selects. Transformed hard-coded code to be generic and allow for user's
+		input to be worked with. Added some aesthetic changes and assisted with metronome testing.
+			(5 hrs)
+		  Worked on report.
+		  	(2 hrs)
 
 Kendall
  - 11/1 & 11/2: researched serial communication and made program in 
