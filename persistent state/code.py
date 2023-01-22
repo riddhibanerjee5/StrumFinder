@@ -18,6 +18,7 @@ import pwmio
 serial = usb_cdc.data       # allow for serial connection
 input_byte = None           # input from serial connection
 play_flag = 0               # flag for if the piezo should play or not
+set_flag = 0                # flag for if the metronome has been set
 piezo = pwmio.PWMOut(board.D12, duty_cycle=0, frequency=440, variable_frequency=True)   # create a metronome with pwm
 piezo.frequency = 440       # tone of the metronome noise
 bps = -1                  # beats per second
@@ -39,6 +40,11 @@ while (True):
             bpm = float(input[space+1:])
             bps = 60.0 / bpm
             print("Set to ", bpm, " beats per minute")
+#        elif input.find('unpause'):
+#            space = input.find(' ')
+#            bpm = float(input[space+1:])
+#            bps = 60.0 / bpm
+#            print("Set to ", bpm, " beats per minute")
         # play the metronome
         elif input.find('play') != -1:
             if bps == -1:

@@ -5,10 +5,10 @@ from tkinter import *
 import multiprocessing
 from tkinter import filedialog, simpledialog
 from PIL import ImageTk, Image
-import pygame
+from pygame import mixer
 from stft_chirp import show_graph
 from stft import generateNotes
-pygame.mixer.init()
+mixer.init()
 
 colors = {"turqoise": "#55D6BE",
           "magicMint": "#ACFCD9",
@@ -33,6 +33,7 @@ title = Label(root, text="Strum Finder", bd=9, relief=GROOVE,
 title.pack(side=TOP, fill=X)
 
 metro = metronome()
+pauseFlag = 0
 
 ############################### Images ################################
 #frame = Frame(root, width=50, height=50)
@@ -48,24 +49,37 @@ metro = metronome()
 
 
 ############################## FUNCTIONS ########################################
+
 def openFile():
     global soundFile
+    global playSound
     soundFile = filedialog.askopenfilename(initialdir="/",
                                            title="Select a File",
                                            filetypes=(("wav files",
                                                       "*.wav*"),
                                                       ))
+    playSound = mixer.music.load(soundFile)
 
 
 def play():
+    global pauseFlag
     if soundFile:
-        playSound = pygame.mixer.Sound(soundFile)
-        playSound.play()
+        if pauseFlag == 1:
+            mixer.music.unpause()
+            metro.unpause(metro.calculate_bpm(soundFile), mixer.music.get_pos())
+        else:
+            mixer.music.play()
 
+def pause():
+    global pauseFlag
+    mixer.music.pause()
+    pauseFlag = 1
 
-def stop():
-    pygame.mixer.pause()
-
+def restart():
+    global pauseFlag
+    if soundFile:
+        mixer.music.stop()
+        pauseFlag = 0
 
 def openNotes():
     generateNotes(soundFile)
@@ -91,6 +105,8 @@ def pause_metronome():
 
 ##################################################################################
 ##################### ORIGINAL SONG ####################################
+button_width_apart = 400
+
 original_song_label = Label(root, text="Original Song", font=(
     "Helvetica", 25, "bold"), bg=colors["white"], fg=colors["orangeSoda"])
 original_song_label.place(y=120, x=650)     # x = 90 before
@@ -102,11 +118,15 @@ select_file_button.place(y=200, x=100)
 # making a button which trigger the function so sound can be played
 play_button = Button(root, text="Play Song", font=(
     "Helvetica", 16), relief=GROOVE, command=play, bg=colors["magicMint"])
-play_button.place(y=200, x=700)
+play_button.place(y=200, x=100+button_width_apart)
 
-stop_button = Button(root, text="Stop Song", font=(
-    "Helvetica", 16), relief=GROOVE, command=stop, bg=colors["magicMint"])
-stop_button.place(y=200, x=1300)
+stop_button = Button(root, text="Pause Song", font=(
+    "Helvetica", 16), relief=GROOVE, command=pause, bg=colors["magicMint"])
+stop_button.place(y=200, x=100+(2*button_width_apart))
+
+restart_button = Button(root, text="Restart Song", font=(
+    "Helvetica", 16), relief=GROOVE, command=restart, bg=colors["magicMint"])
+restart_button.place(y=200, x=100+(3*button_width_apart))
 
 #########################################################################
 

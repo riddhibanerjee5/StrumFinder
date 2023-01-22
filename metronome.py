@@ -32,7 +32,7 @@ class metronome:
     # set the metronome speed
     def set_bpm(self, bpm):
         # bpm valid check
-        if bpm < 0:
+        if bpm < 0 and type(bpm) == float:
             print('Invalid bpm')
             return
 
@@ -48,6 +48,14 @@ class metronome:
     # pause the metronome
     def pause(self):
         self.serial_connection.write(b'pause\r\n')
+
+    def unpause(self, bpm, song_time_pos):
+        bp_ms = bpm / 60 * 1000
+        time_to_beat = bp_ms - (song_time_pos % bp_ms)
+        print("bpm: ", str(bpm), ", bp_ms: ", str(bp_ms), ", song time pause: ", str(song_time_pos), ", time to beat: ", str(time_to_beat))
+        input_str = "unpause {}\r\n".format(time_to_beat)
+        input = bytes(input_str, encoding='utf-8')
+        #self.serial_connection.write(input)
 
     # set the serial connection to the microcontroller
     def set_serial(self, port):
