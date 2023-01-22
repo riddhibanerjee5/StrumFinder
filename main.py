@@ -34,6 +34,7 @@ title.pack(side=TOP, fill=X)
 
 metro = metronome()
 pauseFlag = 0
+metroOnFlag = 0
 
 ############################### Images ################################
 #frame = Frame(root, width=50, height=50)
@@ -63,23 +64,43 @@ def openFile():
 
 def play():
     global pauseFlag
+    global metroOnFlag
     if soundFile:
         if pauseFlag == 1:
+            songTime = mixer.music.get_pos()
+
+            if metroOnFlag and metro != None:
+                metro.unpause(metro.calculate_bpm(soundFile), songTime)
+
             mixer.music.unpause()
-            metro.unpause(metro.calculate_bpm(soundFile), mixer.music.get_pos())
         else:
             mixer.music.play()
 
+            if metroOnFlag and metro != None:
+                metro.set_bpm(metro.calculate_bpm(soundFile))
+                metro.play()
+
 def pause():
     global pauseFlag
+    global metroOnFlag
+
     mixer.music.pause()
+
+    if metroOnFlag and metro != None:
+        metro.pause()
+
     pauseFlag = 1
 
 def restart():
     global pauseFlag
+    global metroOnFlag
+
     if soundFile:
         mixer.music.stop()
         pauseFlag = 0
+
+    if metroOnFlag and metro != None:
+        metro.pause()
 
 def openNotes():
     generateNotes(soundFile)
@@ -87,12 +108,18 @@ def openNotes():
 
 
 def serial():
+    global metroOnFlag
     port = simpledialog.askstring(title="Select Port",
                                   prompt="Port:")
     metro.set_serial(port)
+    metroOnFlag = 1 
 
 
 def start_metronome():
+    global metroOnFlag
+
+    metroOnFlag = 1
+
     if metro != None:
         metro.set_bpm(metro.calculate_bpm(soundFile))
         metro.play()

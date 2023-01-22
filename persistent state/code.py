@@ -18,10 +18,11 @@ import pwmio
 serial = usb_cdc.data       # allow for serial connection
 input_byte = None           # input from serial connection
 play_flag = 0               # flag for if the piezo should play or not
+unpause_flag = 0
 set_flag = 0                # flag for if the metronome has been set
 piezo = pwmio.PWMOut(board.D12, duty_cycle=0, frequency=440, variable_frequency=True)   # create a metronome with pwm
 piezo.frequency = 440       # tone of the metronome noise
-bps = -1                  # beats per second
+spb = -1                  # beats per second
 beep_len = 0.1              # metronome tick length
 
 while (True):
@@ -38,16 +39,18 @@ while (True):
         if input.find('set') != -1:
             space = input.find(' ')
             bpm = float(input[space+1:])
-            bps = 60.0 / bpm
+            spb = 60.0 / bpm
             print("Set to ", bpm, " beats per minute")
-#        elif input.find('unpause'):
-#            space = input.find(' ')
-#            bpm = float(input[space+1:])
-#            bps = 60.0 / bpm
-#            print("Set to ", bpm, " beats per minute")
+        elif input.find('unpause') != -1:
+            space = input.find(' ')
+            time_to_beat_ms = float(input[space+1:])
+            time_to_beat = time_to_beat_ms / 1000
+            print("Unpaused. Time to next beat: ", time_to_beat, "s")
+            play_flag = 1
+            unpause_flag = 1
         # play the metronome
         elif input.find('play') != -1:
-            if bps == -1:
+            if spb == -1:
                 print("BPM has not been set yet, not able to play")
                 play_flag = 0
             else:
@@ -59,15 +62,23 @@ while (True):
             play_flag = 0
 
     # play the metronome while the play_flag is true
+#    start = 0
     while play_flag:
         if serial.in_waiting > 0:
             break
         
+        if unpause_flag:
+#            start = time.monotonic_ns()
+            time.sleep(time_to_beat)
+            unpause_flag = 0
+            continue
+
         # tick cycle
         piezo.duty_cycle = 65535 // 2  # On 50%
-        time.sleep(beep_len)  # On for 1/4 second
+
+#        end = time.monotonic_ns()
+#        print(end-start)
+
+        time.sleep(beep_len) # On for 1/4 second
         piezo.duty_cycle = 0  # Off
-        time.sleep(bps-beep_len)  # Pause between notes
-
-
-    
+        time.sleep(spb-beep_len)  # Pause between notes
