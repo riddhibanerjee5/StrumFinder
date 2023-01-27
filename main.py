@@ -50,6 +50,28 @@ metroOnFlag = 0
 
 #label = Label(frame, image=sound_wave_img)
 # label.pack()
+
+upstrum = ImageTk.PhotoImage(Image.open("uparrow.png"))
+downstrum = ImageTk.PhotoImage(Image.open("downarrow.png"))
+    
+downstrum_label1 = Label(image=downstrum,height=100,width=100)
+downstrum_label2 = Label(image=downstrum,height=100,width=100)
+#downstrum_label1.config(bg="green", fg="green")
+    
+downstrum_label1.image = downstrum
+downstrum_label2.image = downstrum
+    
+upstrum_label1 = Label(image=upstrum,height=100,width=100)
+upstrum_label2 = Label(image=upstrum,height=100,width=100)
+    
+upstrum_label1.image = upstrum
+upstrum_label2.image = upstrum
+    
+downstrum_label3 = Label(image=downstrum,height=100,width=100)
+downstrum_label3.image = downstrum
+    
+upstrum_label3 = Label(image=upstrum,height=100,width=100)
+upstrum_label3.image = upstrum
 #######################################################################
 
 
@@ -133,62 +155,54 @@ def pause_metronome():
     if metro != None:
         metro.pause()
         
-def display_strums():
-    upstrum = ImageTk.PhotoImage(Image.open("uparrow.png"))
-    downstrum = ImageTk.PhotoImage(Image.open("downarrow.png"))
-    downstrum_label1 = Label(image=downstrum,height=100,width=100)
-    upstrum_label1 = Label(image=upstrum,height=100,width=100)
-    downstrum_label1.image = downstrum
-    upstrum_label1.image = upstrum
+def display_strum_pattern():
+    downstrum_label1.place(x=100,y=450)
+    downstrum_label2.place(x=350,y=450)
+    upstrum_label1.place(x=600,y=450)
+    upstrum_label2.place(x=850,y=450)
+    downstrum_label3.place(x=1100,y=450)
+    upstrum_label3.place(x=1350,y=450)
     
-    downstrum_label2 = Label(image=downstrum,height=100,width=100)
-    upstrum_label2 = Label(image=upstrum,height=100,width=100)
-    downstrum_label2.image = downstrum
-    upstrum_label2.image = upstrum
+#def play_strums():
     
-    downstrum_label3 = Label(image=downstrum,height=100,width=100)
-    upstrum_label3 = Label(image=upstrum,height=100,width=100)
-    downstrum_label3.image = downstrum
-    upstrum_label3.image = upstrum
     
-    downstrum_label4 = Label(image=downstrum,height=100,width=100)
-    downstrum_label5 = Label(image=downstrum,height=100,width=100)
-    downstrum_label4.image = downstrum
-    downstrum_label5.image = downstrum
+        
+# def display_strums():
+#    upstrum = ImageTk.PhotoImage(Image.open("uparrow.png"))
+#    downstrum = ImageTk.PhotoImage(Image.open("downarrow.png"))
     
-    upstrum_label4 = Label(image=upstrum,height=100,width=100)
-    downstrum_label6 = Label(image=downstrum,height=100,width=100)
-    downstrum_label7 = Label(image=downstrum,height=100,width=100)
-    upstrum_label5 = Label(image=upstrum,height=100,width=100)
-    downstrum_label8 = Label(image=downstrum,height=100,width=100)
+#    downstrum_label1 = Label(image=downstrum,height=100,width=100)
+#    downstrum_label2 = Label(image=downstrum,height=100,width=100)
     
-    upstrum_label4.image = upstrum
-    downstrum_label6.image = downstrum
-    downstrum_label7.image = downstrum
-    upstrum_label5.image = upstrum
-    downstrum_label8.image = downstrum
+#    downstrum_label1.image = downstrum
+#    downstrum_label2.image = downstrum
     
+#    upstrum_label1 = Label(image=upstrum,height=100,width=100)
+#    upstrum_label2 = Label(image=upstrum,height=100,width=100)
+    
+#    upstrum_label1.image = upstrum
+#    upstrum_label2.image = upstrum
+    
+#    downstrum_label3 = Label(image=downstrum,height=100,width=100)
+#    downstrum_label3.image = downstrum
+    
+#    upstrum_label3 = Label(image=upstrum,height=100,width=100)
+#    upstrum_label3.image = upstrum
     
     # infinite loop
-    while True:
-        xaxis = 1550
-        while xaxis > -1000:
-            upstrum_label1.place(x=xaxis,y=450)
-            downstrum_label1.place(x=xaxis+150,y=450)
-            upstrum_label2.place(x=xaxis+300,y=450)
-            downstrum_label2.place(x=xaxis+450,y=450)
-            upstrum_label3.place(x=xaxis+600,y=450)
-            downstrum_label3.place(x=xaxis+750,y=450)
-            downstrum_label4.place(x=xaxis+900,y=450)
-            downstrum_label5.place(x=xaxis+1050,y=450)
-            upstrum_label4.place(x=xaxis+1200,y=450)
-            downstrum_label6.place(x=xaxis+1350,y=450)
-            downstrum_label7.place(x=xaxis+1500,y=450)
-            upstrum_label5.place(x=xaxis+1650,y=450)
-            downstrum_label8.place(x=xaxis+1800,y=450)
-            root.update()
-            time.sleep(0.00005)            
-            xaxis-=1        
+#    while True:
+#        xaxis = 1550
+#        while xaxis > 0:
+#            downstrum_label1.place(x=xaxis,y=450)
+#            downstrum_label2.place(x=xaxis+250,y=450)
+#            upstrum_label1.place(x=xaxis+500,y=450)
+#            upstrum_label2.place(x=xaxis+750,y=450)
+#            downstrum_label3.place(x=xaxis+1000,y=450)
+#            upstrum_label3.place(x=xaxis+1250,y=450)
+            
+#            root.update()
+#            time.sleep(0.00000005)            
+#            xaxis-=1        
 
 
 ##################################################################################
@@ -226,21 +240,21 @@ strum_pattern_label.place(y=300, x=650)
 
 # TO DO: Add functionality on press
 generate_patterns_button = Button(root, text="Generate Strum Patterns", font=(
-    "Helvetica", 16), relief=GROOVE, command=display_strums,bg=colors["languidLavender"])
+    "Helvetica", 16), relief=GROOVE, command=display_strum_pattern,bg=colors["languidLavender"])
 generate_patterns_button.place(y=380, x=100)
 
-generate_patterns_button = Button(root, text="Generate Notes", font=(
-    "Helvetica", 16), relief=GROOVE, command=openNotes, bg=colors["languidLavender"])
-generate_patterns_button.place(y=380, x=900) #was x=670
+#generate_patterns_button = Button(root, text="Generate Notes", font=(
+#    "Helvetica", 16), relief=GROOVE, command=openNotes, bg=colors["languidLavender"])
+#generate_patterns_button.place(y=380, x=900) #was x=670
 
 # TO DO: Add functionality on press
-start_button = Button(root, text="Start", font=(
-    "Helvetica", 16), relief=GROOVE, bg=colors["languidLavender"])
-start_button.place(y=380, x=550)
+#start_button = Button(root, text="Start", font=(
+#    "Helvetica", 16), relief=GROOVE, command=play_strums, bg=colors["languidLavender"])
+#start_button.place(y=380, x=550)
 
-show_graph_button = Button(root, text="Show Plot", font=(
-    "Helvetica", 16), relief=GROOVE, command=show_graph, bg=colors["languidLavender"])
-show_graph_button.place(y=380, x=1300)
+#show_graph_button = Button(root, text="Show Plot", font=(
+#    "Helvetica", 16), relief=GROOVE, command=show_graph, bg=colors["languidLavender"])
+#show_graph_button.place(y=380, x=1300)
 
 #########################################################################
 
