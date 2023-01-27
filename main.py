@@ -9,6 +9,7 @@ from PIL import ImageTk, Image
 from pygame import mixer
 from stft_chirp import show_graph
 from stft import generateNotes
+from strum import generate_strums
 mixer.init()
 
 colors = {"turqoise": "#55D6BE",
@@ -92,19 +93,47 @@ def play():
     global pauseFlag
     global metroOnFlag
     if soundFile:
+        songTime = mixer.music.get_pos() // 10
+        strums, times = generate_strums()
         if pauseFlag == 1:
-            songTime = mixer.music.get_pos()
-
             if metroOnFlag and metro != None:
                 metro.unpause(metro.calculate_bpm(soundFile), songTime)
 
             mixer.music.unpause()
         else:
-            mixer.music.play()
-
-            if metroOnFlag and metro != None:
-                metro.set_bpm(metro.calculate_bpm(soundFile))
-                metro.play()
+                mixer.music.play()
+#                if songTime in strums.keys():
+#                    if strums[songTime] == "up":
+                while True:
+                    upstrum_label3.config(bg="white",fg="white")
+                    downstrum_label1.config(bg="green",fg="green")
+                    time.sleep(0.2)
+                    root.update()
+                    downstrum_label1.config(bg="white",fg="white")
+                    downstrum_label2.config(bg="green",fg="green")
+                    time.sleep(0.4)
+                    root.update()
+#                   else:
+                    downstrum_label2.config(bg="white",fg="white")
+                    upstrum_label1.config(bg="green", fg="green")
+                    time.sleep(0.4)
+                    root.update()
+                    upstrum_label1.config(bg="white", fg="white")
+                    upstrum_label2.config(bg="green",fg="green")
+                    time.sleep(0.4)
+                    root.update()
+                    upstrum_label2.config(bg="white",fg="white")
+                    downstrum_label3.config(bg="green",fg="green")
+                    time.sleep(0.4)
+                    root.update()
+                    downstrum_label3.config(bg="white",fg="white")
+                    upstrum_label3.config(bg="green",fg="green")
+                    time.sleep(0.4)
+                    root.update()
+                    
+                    if metroOnFlag and metro != None:
+                        metro.set_bpm(metro.calculate_bpm(soundFile))
+                        metro.play()
 
 def pause():
     global pauseFlag
