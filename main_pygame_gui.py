@@ -10,12 +10,10 @@ from stft import generateNotes
 from strum import generate_strums
 import pygame, sys
 
+pygame.mixer.pre_init(44100,-16,2,2048)
 pygame.init()
-clock = pygame.time.Clock()
 
-colors = {"background_color" : (0x2d, 0x2d, 0x2b), "font_color" : (0xbb, 0xbf, 0xd5), "white" : (255, 255, 255),
-        "title_font_color" : (0xe0, 0x5c, 0xeb)}
-
+# variables
 width =  1600   # width of grid
 height = 800    # height of grid
 title_font = pygame.font.Font('OVERLOAD.ttf', 64)
@@ -23,18 +21,25 @@ font = pygame.font.SysFont('microsoftsansserif', 26, False, False)
 subtitle_font = pygame.font.Font('OVERLOAD.ttf', 42)
 screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
 metro = metronome()
-metro_loaded_flag = False
-strum_showing_flag = False
-music_playing_flag = False
-metronome_strum_flag = False
-metronome_en = False
-strum_index = 0
+metro_loaded_flag = False   # if the metronome is connected
+strum_showing_flag = False  # if the strum pattern should show
+music_playing_flag = False  # if the music is playing
+metronome_strum_flag = False    # if the metronome should be used to hear strums
+metronome_en = False            # if the metronome is on
 bpm = 0
-last_strum = False
-already_played = False
+last_strum = False      # keeps track of the last strum to show
+already_played = False  # makes sure the metronome only sounds once during strumming
+play = False            # if the music will be played 
+soundFile = None        # the sound file name
+pauseFlag = 0           # if the music is paused
 
+# tkinter for setting up port and getting file name
 root = Tk()
 root.withdraw()
+
+# more reusable variables
+colors = {"background_color" : (0x2d, 0x2d, 0x2b), "font_color" : (0xbb, 0xbf, 0xd5), "white" : (255, 255, 255),
+        "title_font_color" : (0xe0, 0x5c, 0xeb)}
 
 img = {"play" : pygame.image.load("images/play-64.png").convert_alpha(), "pause" : pygame.image.load("images/pause-64.png").convert_alpha(),
         "restart" : pygame.image.load("images/rewind-64.png").convert_alpha(), "arrow" : pygame.image.load("images/arrow-141-64.png").convert_alpha()}
@@ -44,9 +49,6 @@ buttons = {"sel_file" : pygame.Rect(100, height // 8, 200, 50), "play/pause" : i
             "play_pattern" : img["play"].get_rect(center = (500,500)), "metro" : pygame.Rect(400, height // 8 * 7, 200, 45),
             "metro_mode" : pygame.Rect(700, height // 8 * 7, 200, 50)}
 
-play = False
-soundFile = None
-pauseFlag = 0
 
 def draw_screen(play):
     screen.fill(colors["background_color"])
@@ -88,7 +90,6 @@ def draw_screen(play):
     metro_en_rect.topleft = (480, height // 8 * 7 + 8)
     screen.blit(metro_en, metro_en_rect)
 
-    # select port button
     metro_mode_title = font.render("Mode", True, colors["white"], colors["background_color"])
     metro_mode_title_rect = metro_mode_title.get_rect()
     metro_mode_title_rect.topleft = (770, height // 8 * 7 - 50)
@@ -117,7 +118,7 @@ def draw_screen(play):
 
     screen.blit(img["restart"], buttons["restart"])
 
-    if strum_showing_flag and soundFile:
+    if strum_showing_flag:
         screen.blit(img["pause"], buttons["play_pattern"])
     else:
         screen.blit(img["play"], buttons["play_pattern"])
@@ -178,11 +179,12 @@ while True:
                 metro_loaded_flag = True
 
             elif buttons["play_pattern"].collidepoint(pos[0], pos[1]):
+                strum_showing_flag = not strum_showing_flag
                 if soundFile:
                     notes = generateNotes(soundFile)
                     strums, times = generate_strums()
 
-                    strum_showing_flag = True
+                    
 
             elif buttons["metro"].collidepoint(pos[0], pos[1]):
                 if metro_loaded_flag:
@@ -203,7 +205,7 @@ while True:
     # False = up, True = down
     if music_playing_flag and strum_showing_flag: 
         music_time = pygame.mixer.music.get_pos() // 10
-        print(music_time)
+        #print(music_time)
 
         if music_time in strums.keys():
             if strums[music_time] == "up":
