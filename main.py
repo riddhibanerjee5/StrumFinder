@@ -39,6 +39,7 @@ title.pack(side=TOP, fill=X)
 metro = metronome()
 pauseFlag = 0
 metroOnFlag = 0
+metroStrumFlag = 0
 
 ############################### Images ################################
 #frame = Frame(root, width=50, height=50)
@@ -138,7 +139,7 @@ def serial():
     port = simpledialog.askstring(title="Select Port",
                                   prompt="Port:")
     metro.set_serial(port)
-    metroOnFlag = 1 
+    metroOnFlag = 0 
 
 
 def start_metronome():
@@ -148,12 +149,22 @@ def start_metronome():
 
     if metro != None:
         metro.set_bpm(metro.calculate_bpm(soundFile))
-        metro.play()
 
 
 def pause_metronome():
+    global metroOnFlag
+
+    metroOnFlag = 0
     if metro != None:
         metro.pause()
+
+def metronome_strum_en():
+    global metroStrumFlag
+    metroStrumFlag = 1
+
+def metronome_strum_disen():
+    global metroStrumFlag
+    metroStrumFlag = 0
         
 def display_strum_pattern():
     downstrum_label1.place(x=100,y=450)
@@ -260,6 +271,8 @@ generate_patterns_button.place(y=380, x=100)
 
 
 ######################### METRONOME #####################################
+buttons_width_apart = 50
+
 metronome_label = Label(root, text="Metronome", font=(
     "Helvetica", 25, "bold"), bg=colors["white"], fg=colors["orangeSoda"])
 metronome_label.place(y=600, x=670)
@@ -268,13 +281,21 @@ select_serial_port_button = Button(root, text="Select Port", font=(
     "Helvetica", 16), relief=GROOVE, command=serial, bg=colors["mustard"])
 select_serial_port_button.place(y=675, x=100)
 
-start_metronome_button = Button(root, text="Start", font=(
+start_metronome_button = Button(root, text="Metronome Enable", font=(
     "Helvetica", 16), relief=GROOVE, command=start_metronome, bg=colors["mustard"])
-start_metronome_button.place(y=675, x=720)
+start_metronome_button.place(y=675, x=100+button_width_apart)
 
-stop_metronome_button = Button(root, text="Stop", font=(
+stop_metronome_button = Button(root, text="Metronome Disable", font=(
     "Helvetica", 16), relief=GROOVE, command=pause_metronome, bg=colors["mustard"])
-stop_metronome_button.place(y=675, x=1320)
+stop_metronome_button.place(y=675, x=100+2*button_width_apart)
+
+metronome_strum_on_button = Button(root, text="Strums Enable", font=(
+    "Helvetica", 16), relief=GROOVE, command=metronome_strum_en, bg=colors["mustard"])
+metronome_strum_on_button.place(y=675, x=100+3*button_width_apart)
+
+metronome_strum_off_button = Button(root, text="Strums Disable", font=(
+    "Helvetica", 16), relief=GROOVE, command=metronome_strum_disen, bg=colors["mustard"])
+metronome_strum_off_button.place(y=750, x=100+2*button_width_apart)
 #########################################################################
 
 root.mainloop()
