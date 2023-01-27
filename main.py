@@ -169,7 +169,7 @@ def display_strums():
     downstrum_label8.image = downstrum
     
     
-    
+    # infinite loop
     while True:
         xaxis = 1550
         while xaxis > -1000:
