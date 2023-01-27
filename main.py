@@ -41,6 +41,8 @@ metro = metronome()
 pauseFlag = 0
 metroOnFlag = 0
 metroStrumFlag = 0
+playFlag = 0
+metroInit = 0
 
 ############################### Images ################################
 #frame = Frame(root, width=50, height=50)
@@ -93,6 +95,11 @@ def openFile():
 def play():
     global pauseFlag
     global metroOnFlag
+    global playFlag
+
+    playFlag = 1
+    root.update()
+
     if soundFile:
         songTime = mixer.music.get_pos() // 10
         strums, times = generate_strums()
@@ -103,53 +110,98 @@ def play():
             mixer.music.unpause()
         else:
                 mixer.music.play()
-#                if songTime in strums.keys():
-#                    if strums[songTime] == "up":
-                while True:
-                    upstrum_label3.config(bg="white",fg="white")
-                    downstrum_label1.config(bg="green",fg="green")
-                    time.sleep(0.2)
-                    root.update()
-                    downstrum_label1.config(bg="white",fg="white")
-                    downstrum_label2.config(bg="green",fg="green")
-                    time.sleep(0.4)
-                    root.update()
-#                   else:
-                    downstrum_label2.config(bg="white",fg="white")
-                    upstrum_label1.config(bg="green", fg="green")
-                    time.sleep(0.4)
-                    root.update()
-                    upstrum_label1.config(bg="white", fg="white")
-                    upstrum_label2.config(bg="green",fg="green")
-                    time.sleep(0.4)
-                    root.update()
-                    upstrum_label2.config(bg="white",fg="white")
-                    downstrum_label3.config(bg="green",fg="green")
-                    time.sleep(0.4)
-                    root.update()
-                    downstrum_label3.config(bg="white",fg="white")
-                    upstrum_label3.config(bg="green",fg="green")
-                    time.sleep(0.4)
-                    root.update()
-                    
-                    if metroOnFlag and metro != None:
-                        metro.set_bpm(metro.calculate_bpm(soundFile))
-                        metro.play()
+        root.update()
+#        if songTime in strums.keys():
+#            if strums[songTime] == "up":
+        while playFlag == 1:
+            if metroStrumFlag and metroInit:
+                metro.strum("down")
+            upstrum_label3.config(bg="white",fg="white")
+            downstrum_label1.config(bg="green",fg="green")
+            time.sleep(0.4)
+            root.update()
+            if playFlag == 0:
+                downstrum_label1.config(bg="white",fg="white")
+                root.update()
+                break
+
+            if metroStrumFlag and metroInit:
+                metro.strum("down")
+            downstrum_label1.config(bg="white",fg="white")
+            downstrum_label2.config(bg="green",fg="green")
+            time.sleep(0.2)
+            root.update()
+            if playFlag == 0:
+                downstrum_label2.config(bg="white",fg="white")
+                root.update()
+                break
+#           else:
+            if metroStrumFlag and metroInit:
+                metro.strum("up")
+            downstrum_label2.config(bg="white",fg="white")
+            upstrum_label1.config(bg="green", fg="green")
+            time.sleep(0.5)
+            root.update()
+            if playFlag == 0:
+                upstrum_label1.config(bg="white",fg="white")
+                root.update()
+                break
+
+            if metroStrumFlag and metroInit:
+                metro.strum("up")
+            upstrum_label1.config(bg="white", fg="white")
+            upstrum_label2.config(bg="green",fg="green")
+            time.sleep(0.2)
+            root.update()
+            if playFlag == 0:
+                upstrum_label2.config(bg="white",fg="white")
+                root.update()
+                break
+
+            if metroStrumFlag and metroInit:
+                metro.strum("down")
+            upstrum_label2.config(bg="white",fg="white")
+            downstrum_label3.config(bg="green",fg="green")
+            time.sleep(0.2)
+            root.update()
+            if playFlag == 0:
+                downstrum_label3.config(bg="white",fg="white")
+                root.update()
+                break
+
+            if metroStrumFlag and metroInit:
+                metro.strum("up")
+            downstrum_label3.config(bg="white",fg="white")
+            upstrum_label3.config(bg="green",fg="green")
+            time.sleep(0.2)
+            root.update()
+
+            if playFlag == 0:
+                downstrum_label3.config(bg="white",fg="white")
+                root.update()
+                break
+
+            if metroOnFlag and metroInit:
+                metro.set_bpm(metro.calculate_bpm(soundFile))
+                metro.play()
 
 def pause():
     global pauseFlag
     global metroOnFlag
+    global playFlag
 
     mixer.music.pause()
 
-    if metroOnFlag and metro != None:
+    if metroOnFlag and metroInit:
         metro.pause()
 
     pauseFlag = 1
+    playFlag = 0
 
 def restart():
     global pauseFlag
     global metroOnFlag
+    global playFlag
 
     if soundFile:
         mixer.music.stop()
@@ -158,6 +210,8 @@ def restart():
     if metroOnFlag and metro != None:
         metro.pause()
 
+    playFlag = 0
+
 def openNotes():
     generateNotes(soundFile)
     startfile("notes.txt")
@@ -165,10 +219,12 @@ def openNotes():
 
 def serial():
     global metroOnFlag
+    global metroInit
     port = simpledialog.askstring(title="Select Port",
                                   prompt="Port:")
     metro.set_serial(port)
     metroOnFlag = 0 
+    metroInit = 1
 
 
 def start_metronome():

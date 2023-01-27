@@ -73,4 +73,24 @@ Kendall
 	 get the port. wrote all the parts of the report that had to do with the 
          metronome and wrote my part of Empirical Evidence. 
 	 (6 hrs)
+ - 1/15: Researching different GUI frameworks (2 hrs)
+ - 1/20: ideating and researching for how the strum pattern should be shown. 
+ 	(1 hr)
+ - 1/21: researched frameworks and researched parts to play MIDI or different audio files. Bought parts. 
+ 		 added pause, unpause, and restart functionality in UI for audio.  
+	(7 hrs)
+ - 1/22: coded and debugged pausing and unpausing the metronome. Ideating for UI look to synchronize 
+	 metronome to song. Temporarily synched metronome to UI.
+	(7 hrs)
+ - 1/23: ideate how to show the strum patterns and how they will be used in the metronome. 
+	 Implement the strum patterns into the metronome and tested them. Made some minor
+	 code fixes.
+	 (6 hrs)
+ - 1/24: researched showing images and tkinter. found images for application. researched pygame
+	and tkinter. started converting GUI to pygame since tkinter seemed to not show images well.
+	(6 hrs)
+ - 1/25: Converted GUI to pygame. Researched pygame.
+	(6 hrs)
+ - 1/26: Continued converting GUI to pygame. (4 hrs)
+ - 1/27: Finishing touches on both the TKinter and pygame GUI (7 hrs)
          
