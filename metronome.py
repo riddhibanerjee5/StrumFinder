@@ -51,22 +51,41 @@ class metronome:
     def pause(self):
         self.serial_connection.write(b'pause\r\n')
 
+    # unpause the metronome to be in time with the music
+    # bpm is the specified bpm of the song
+    # song_time_pos is the time that the song is at in ms
     def unpause(self, bpm, song_time_pos):
+        # checks that bpm isnt a string and isnt negative
         if bpm < 0 or type == str:
             print(bpm)
             print(type(bpm))
             print('Invalid bpm')
             return
 
-        if song_time_pos < 0 or (type(song_time_pos) != float and type(song_time_pos) !=  int):
+        # checks that the time in the song isnt a string and isnt negative
+        if song_time_pos < 0 or type == str:
             print('Invalid time of song')
             return
 
+        # calculates the ms per beat and the time to the next beat
         mspb = 60.0 / bpm * 1000
         time_to_beat = mspb - (song_time_pos % mspb)
-        #print("bpm: ", str(bpm), ", mspb: ", str(mspb), ", song time pause: ", str(song_time_pos), ", time to beat: ", str(time_to_beat))
+        
+        # creates and sends the command for the metronome
         input_str = "unpause {}\r\n".format(time_to_beat)
-        #print(input_str)
+        input = bytes(input_str, encoding='utf-8')
+        self.serial_connection.write(input)
+
+    # tells the metronome to output a strum
+    # strum_type is either "up" or "down" since those are the only strums we are checking for
+    def strum(self, strum_type):
+        # validity check
+        if strum_type != "up" and strum_type != "down":
+            print("Strum is not a string")
+            return
+
+        # sends the command
+        input_str = "strum " + strum_type + "\r\n"
         input = bytes(input_str, encoding='utf-8')
         self.serial_connection.write(input)
 
