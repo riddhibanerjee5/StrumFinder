@@ -295,7 +295,7 @@ metronome_strum_on_button.place(y=675, x=100+3*button_width_apart)
 
 metronome_strum_off_button = Button(root, text="Strums Disable", font=(
     "Helvetica", 16), relief=GROOVE, command=metronome_strum_disen, bg=colors["mustard"])
-metronome_strum_off_button.place(y=750, x=100+2*button_width_apart)
+metronome_strum_off_button.place(y=750, x=700)
 #########################################################################
 
 root.mainloop()
