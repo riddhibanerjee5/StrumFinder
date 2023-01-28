@@ -37,6 +37,30 @@ Riddhi
 			(5 hrs)
 		  Worked on report.
 		  	(2 hrs)
+- 1/16: Researched and contemplated static display of strums versus dynamic/interactive display
+			(2 hrs)
+- 1/19: Explored different methods of moving images/creating a motion GUI in Tkinter as well as other frameworks
+			(6 hrs)
+- 1/22: Researched possible icons to use for strums. Ran into error of images not rendering properly, so I had to manually resize
+		them before placing them on the GUI. Syntax for displaying images can be done in many ways in Python Tkinter and is not
+		always clear, so I explored with many different methods, including using canvases and labels.
+			(8 hrs)
+- 1/23: Figured out a way to accurately place the image (upstrums and downstrums) on the GUI by using a label. Still, the images 
+		would not render. Found a breakthrough with a single line of code which included assigning the label's image to the loaded
+		in image (even though this step seemed to already be done in the initialization of the label before).
+			(7 hrs)
+- 1/24: Explored methods to move images on the GUI. Experimented with a couple of different methods but realized they did not solve
+		our problem as needed.
+			(6 hrs)
+- 1/25: Decided to research "animations" in Python Tkinter and came across something promising. This made me realize the two important
+		lines of code I was missing: time.sleep and root.update. Both of these are essential in creating a delay and re-rendering the screen
+		to give the "animation" feel.
+			(7 hrs)
+- 1/26: Coded and finalized the strum animation display. Talked over with team on using Tkinter or Pygame and tested out both platforms.
+		Decided on using Tkinter.
+			(7 hrs)
+- 1/27: Finalized changes from Pygame to Tkinter and remodeled the strum display animation.
+			(6 hrs)
 
 Kendall
  - 11/1 & 11/2: researched serial communication and made program in 

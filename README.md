@@ -1,10 +1,13 @@
 ﻿# STRUMFINDER
 
-        Instructions to Navigate the Alpha Build
+                                Instructions to Navigate the Alpha Build
+                                
+Enter the home directory of the project (where main.py is placed) and run "python main.py".
+
 Use the Select File button to select the wav file “You and I - Ingrid Michaelson.wav” in the wav-files folder. Click the Generate Strum Pattern button to show the strum pattern of the song. If the metronome functionality is wanted, select the Select Port button and put in the port the metronome is connected to. The microcontroller should be connected to the piezo as shown in the “Hardware Schematics” document. To enable the metronome click the Enable Metronome button. Click the Play Song button to play the song and see how the strum pattern is played within the song. The metronome can be used to hear the strum pattern more clearly by clicking Disable Metronome then Strums Enable button. 
 
 
-        Usability
+                                                Usability
         Interface
 The Original Song section has the Select File, Play Song, Pause Song, and Restart Song buttons. The Select File button allows for users to choose a song file with a .wav extension to generate strum patterns for. The Play Song button plays the song and if the metronome is enabled, the metronome will play with it. The Pause Song button pauses the song and the metronome if enabled. The Restart Song button pauses and restarts the song and the metronome if enabled.
 The Strum Pattern section has the Generate Strum Patterns button. This allows the user to see the strum pattern being used in the song currently. When the Play Song button is pressed in the Original Song section, the strum that is currently playing will be green. If the metronome strum mode is enabled the metronome will play a down-strum or up-strum noise with the strum.
@@ -19,7 +22,7 @@ There is only one screen with buttons that are well defined. Users should easily
 There are little to no delays in the build.
 
 
-        Build Quality
+                                                Build Quality
         Robustness
 There should be no crashes unless undefined behavior is done.
         Consistency
