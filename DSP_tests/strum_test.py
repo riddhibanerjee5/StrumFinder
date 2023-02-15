@@ -7,6 +7,19 @@ from matplotlib.pyplot import cm
 
 import heapq
 
+def strum_direction(magnitude_stft):
+    # Calculate the energy of the signal by summing the magnitude of the STFT
+    energy = np.sum(magnitude_stft, axis=1)
+    
+    # Calculate the slope of the energy signal over time
+    slope = np.diff(energy)
+    
+    # Determine the strum direction based on the slope of the energy signal
+    if np.mean(slope) > 0:
+        return "Up strum"
+    else:
+        return "Down strum"
+
 def top_ten_greatest(arr):
     # Flatten the 2D array into a 1D array
     flat_arr = [item for sublist in arr for item in sublist]
@@ -83,13 +96,26 @@ freqs = findMaxFreq(X, Fs)
 X = np.array(X) #WEIRD STFT ON PIGSTRUM
 #A = X[576:960]
 A = np.flip(X,0)
-graph(A)
+#graph(X)
 
-magnitude = A
+magnitude = X[:,1:50]
+#graph(magnitude)
 
 # Compute the slope of the energy in the time-frequency plane
-freq, time = np.meshgrid(np.arange(magnitude.shape[0]), np.arange(magnitude.shape[1]))
+# time, freq?
+time, freq = np.meshgrid(np.arange(magnitude.shape[0]), np.arange(magnitude.shape[1]))
+
+a = time.ravel()
+b = freq.ravel()
+c = magnitude.ravel()
+time = np.transpose(time)
+freq = np.transpose(freq)
+#print(time[0][50])
+#print(freq[0][50])
+#print(magnitude[10][50])
+
 slope = np.polyfit(time.ravel(), freq.ravel(), 1, w=magnitude.ravel())[0]
+
 
 # Check the slope to determine if the signal is being upstrummed or downstrummed
 if slope > 0: # SEEMS BACKWARDS?
@@ -98,7 +124,7 @@ else:
     print("The signal is being downstrummed")
 
 
-
+print(strum_direction(magnitude))
 
 
 #print(top_ten_greatest(X))

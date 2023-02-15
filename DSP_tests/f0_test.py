@@ -4,6 +4,7 @@ from math import log2, pow
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import cm
+from scipy.signal import butter, lfilter
 
 
 def stft(n, t, w, x, M, W, Fs):
@@ -74,18 +75,27 @@ M = math.floor(length*bps*4.0)   # sixteenth notes
 W = math.floor(len(x[0])/M)
 
 X = stft(n, t, w, x[0], M, W, Fs)
-
-# find max frequencies
 for i in range(len(X)):
     X[i] = abs(X[i])
-#freqs = findMaxFreq(X, Fs)
+
+# apply filter
+X = np.array(X)
+passband = [50,650]
+order = 5
+nyquist_freq = .5 * Fs
+low = passband[0] / nyquist_freq
+high = passband[1] / nyquist_freq
+b, a = butter(order, [low,high], btype='band')
+X = lfilter(b, a, X)
+
+# find max frequencies, f0
 freq = findMaxFreq(X,Fs)
 freqs = findF0(X, Fs)
 
 n = 1
 print(t[n])
 print(freq[n])
-print("\n")
+print("")
 for i in range(len(freqs[n])):
     print(freqs[n][i])
 

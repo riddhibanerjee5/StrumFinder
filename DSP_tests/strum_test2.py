@@ -65,7 +65,7 @@ n = []
 t = []
 w = []
 
-x, Fs = sf.read("pigstrum.wav")
+x, Fs = sf.read("pigsbar.wav")
 x = x.transpose()
 M = math.floor(len(x[0])/100)
 W = math.floor(len(x[0])/M)
@@ -78,24 +78,21 @@ for i in range(len(X)):
 freqs = findMaxFreq(X, Fs)
 
 
-
-#print(t[576])
-#print(t[960])
-X = np.array(X) #WEIRD STFT ON PIGSTRUM
-#A = X[576:960]
+X = np.array(X)
 A = np.flip(X,0)
-graph(A)
+#graph(X)
 
-magnitude = X
+magnitude = X[:,1:50]
 
 # Get the onset frames
 onset_frames = librosa.onset.onset_detect(y=x[0], sr=44100, backtrack=False)
 
 for onset_frame in onset_frames:
     # Compute the slope of the energy in the time-frequency plane for the frame index
-    frame_magnitude = magnitude[:, onset_frame]
+    frame_magnitude = magnitude[onset_frame, :]
     #freq, time = np.meshgrid(np.arange(frame_magnitude.shape[0]), np.arange(frame_magnitude.shape[1]))
-    freq, time = np.meshgrid(np.arange(frame_magnitude.shape[0]), np.array([onset_frame]))
+    freq = np.array(np.meshgrid(np.arange(frame_magnitude.shape[0])))
+    time = np.array([onset_frame])
     slope = np.polyfit(time.ravel(), freq.ravel(), 1, w=frame_magnitude.ravel())[0]
 
     # Check the slope to determine if the signal is being upstrummed or downstrummed
