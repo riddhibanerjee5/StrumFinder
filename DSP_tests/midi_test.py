@@ -6,45 +6,6 @@ import matplotlib.pyplot as plt
 from matplotlib.pyplot import cm
 import pretty_midi as midi
 
-def strum_direction(magnitude_stft):
-    # Calculate the energy of the signal by summing the magnitude of the STFT
-    energy = np.sum(magnitude_stft, axis=1)
-    
-    # Calculate the slope of the energy signal over time
-    slope = np.diff(energy)
-    
-    # Determine the strum direction based on the slope of the energy signal
-    if np.mean(slope) > 0:
-        return "Up strum"
-    else:
-        return "Down strum"
-
-
-def stft(n, t, w, x, M, W, Fs):
-    X = []
-    for i in range(M):
-        n.append(i*W)
-        t.append(n[i]/Fs)
-        y = x[i*W:(i+1)*W]
-        X.append(np.fft.fft(y))
-    for i in range(W):
-        w.append((2*math.pi*i)/float(W))
-    return X
-
-
-def findMaxFreq(X, Fs):
-    freqs = []
-    for i in range(len(X)):
-        Xmax = 0.0
-        fmax = 0.0
-        for j in range(len(X[i])):
-            if X[i][j] > Xmax:
-                Xmax = X[i][j]
-                if ((j*Fs)/len(X[i])) < (Fs/2) and (j*Fs)/len(X[i]) > 0:
-                    fmax = (j*Fs)/len(X[i])
-        freqs.append(fmax)
-    return freqs
-
 
 def convertToNote(f, name):
     A4 = 440
@@ -55,19 +16,6 @@ def convertToNote(f, name):
     return name[n] + str(octave)
 
 
-def graph(X):
-    plt.pcolormesh(X, cmap='inferno')
-    plt.colorbar()
-    plt.xlabel("Frequency")
-    plt.ylabel("Time")
-    plt.title("Short Time Fourier Transform")
-    plt.show()
-
-
-
-n = []
-t = []
-w = []
 name = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
 
 x = midi.PrettyMIDI('faster_strums.mid')
