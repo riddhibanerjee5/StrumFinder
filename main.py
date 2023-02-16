@@ -57,6 +57,10 @@ metroInit = 0
 
 upstrum = ImageTk.PhotoImage(Image.open("uparrow.png"))
 downstrum = ImageTk.PhotoImage(Image.open("downarrow.png"))
+select_file_image = ImageTk.PhotoImage(Image.open("./images/select_file.png"))
+play_button_image = ImageTk.PhotoImage(Image.open("./images/play-64.png"))
+pause_button_image = ImageTk.PhotoImage(Image.open("./images/pause-64.png"))
+restart_button_image = ImageTk.PhotoImage(Image.open("./images/rewind-64.png"))
     
 downstrum_label1 = Label(image=downstrum,height=100,width=100)
 downstrum_label2 = Label(image=downstrum,height=100,width=100)
@@ -82,6 +86,11 @@ upstrum_label3.image = upstrum
 ############################## FUNCTIONS ########################################
 
 def openFile():
+    select_file_button.configure(bg="green")
+    play_button.configure(bg=colors["magicMint"])
+    stop_button.configure(bg=colors["magicMint"])
+    restart_button.configure(bg=colors["magicMint"])
+    root.update()
     global soundFile
     global playSound
     soundFile = filedialog.askopenfilename(initialdir="/",
@@ -96,10 +105,29 @@ def play():
     global pauseFlag
     global metroOnFlag
     global playFlag
+    
+    # if(play_button.configure(image=play_button_image)):
+    #     playFlag == 1
+    
+    # if pauseFlag == 1:
+    #     play_button.configure(image=play_button_image)
+    #     root.update()
+        
+    #     mixer.music.pause()
 
+    #     if metroOnFlag and metroInit:
+    #         metro.pause()
+
+    #     pauseFlag = 0
+    #     playFlag = 1
+    
+#    if playFlag == 1:
     playFlag = 1
+    play_button.configure(bg="green")
+    stop_button.configure(bg=colors["magicMint"])
+    restart_button.configure(bg=colors["magicMint"])
+    select_file_button.configure(bg=colors["magicMint"])
     root.update()
-
     if soundFile:
         songTime = mixer.music.get_pos() // 10
         strums, times = generate_strums()
@@ -184,6 +212,7 @@ def play():
             if metroOnFlag and metroInit:
                 metro.set_bpm(metro.calculate_bpm(soundFile))
                 metro.play()
+                    
 
 def pause():
     global pauseFlag
@@ -194,6 +223,12 @@ def pause():
 
     if metroOnFlag and metroInit:
         metro.pause()
+        
+    stop_button.configure(bg="green")
+    play_button.configure(bg=colors["magicMint"])
+    restart_button.configure(bg=colors["magicMint"])
+    select_file_button.configure(bg=colors["magicMint"])
+    root.update()
 
     pauseFlag = 1
     playFlag = 0
@@ -202,6 +237,12 @@ def restart():
     global pauseFlag
     global metroOnFlag
     global playFlag
+    
+    restart_button.configure(bg="green")
+    stop_button.configure(bg=colors["magicMint"])
+    play_button.configure(bg=colors["magicMint"])
+    select_file_button.configure(bg=colors["magicMint"])
+    root.update()
 
     if soundFile:
         mixer.music.stop()
@@ -310,20 +351,20 @@ original_song_label = Label(root, text="Original Song", font=(
 original_song_label.place(y=120, x=650)     # x = 90 before
 
 select_file_button = Button(root, text="Select File", font=(
-    "Helvetica", 16), relief=GROOVE, command=openFile, bg=colors["magicMint"])
+    "Helvetica", 16), relief=GROOVE, command=openFile, bg=colors["magicMint"], image=select_file_image, borderwidth=0)
 select_file_button.place(y=200, x=100)
 
 # making a button which trigger the function so sound can be played
 play_button = Button(root, text="Play Song", font=(
-    "Helvetica", 16), relief=GROOVE, command=play, bg=colors["magicMint"])
+    "Helvetica", 16), relief=GROOVE, command=play, bg=colors["magicMint"], image=play_button_image, borderwidth=0)
 play_button.place(y=200, x=100+button_width_apart)
 
 stop_button = Button(root, text="Pause Song", font=(
-    "Helvetica", 16), relief=GROOVE, command=pause, bg=colors["magicMint"])
+    "Helvetica", 16), relief=GROOVE, command=pause, bg=colors["magicMint"], image=pause_button_image, borderwidth=0)
 stop_button.place(y=200, x=100+(2*button_width_apart))
 
 restart_button = Button(root, text="Restart Song", font=(
-    "Helvetica", 16), relief=GROOVE, command=restart, bg=colors["magicMint"])
+    "Helvetica", 16), relief=GROOVE, command=restart, bg=colors["magicMint"], image=restart_button_image, borderwidth=0)
 restart_button.place(y=200, x=100+(3*button_width_apart))
 
 #########################################################################
