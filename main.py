@@ -7,8 +7,8 @@ import multiprocessing
 from tkinter import filedialog, simpledialog
 from PIL import ImageTk, Image
 from pygame import mixer
-from stft_chirp import show_graph
-from stft import generateNotes
+#from stft_chirp import show_graph
+#from stft import generateNotes
 from strum import generate_strums
 mixer.init()
 
@@ -55,8 +55,8 @@ metroInit = 0
 #label = Label(frame, image=sound_wave_img)
 # label.pack()
 
-upstrum = ImageTk.PhotoImage(Image.open("uparrow.png"))
-downstrum = ImageTk.PhotoImage(Image.open("downarrow.png"))
+upstrum = ImageTk.PhotoImage(Image.open("./images/uparrow.png"))
+downstrum = ImageTk.PhotoImage(Image.open("./images/downarrow.png"))
 select_file_image = ImageTk.PhotoImage(Image.open("./images/select_file.png"))
 play_button_image = ImageTk.PhotoImage(Image.open("./images/play-64.png"))
 pause_button_image = ImageTk.PhotoImage(Image.open("./images/pause-64.png"))
@@ -253,9 +253,9 @@ def restart():
 
     playFlag = 0
 
-def openNotes():
-    generateNotes(soundFile)
-    startfile("notes.txt")
+# def openNotes():
+#     generateNotes(soundFile)
+#     startfile("notes.txt")
 
 
 def serial():
