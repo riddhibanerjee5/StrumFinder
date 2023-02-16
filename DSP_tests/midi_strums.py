@@ -3,6 +3,12 @@ import numpy as np
 import pretty_midi as midi
 
 
+class Chord():
+    def __init__(self, start, strum):
+        self.start = start
+        self.strum = strum
+
+
 def convertToNote(f, name):
     A4 = 440
     C0 = A4*pow(2, -4.75)
@@ -32,38 +38,28 @@ for instrument in x.instruments:
     indices = np.argsort([note.start for note in notes])
     notes = notes[indices]
     
-    chords = np.zeros((2,))
+    chords = np.array([]) # 2D: start time, 
     start = notes[0]
-    n = 100
+    n = 50
     for i in range(len(notes[0:n])):
         if (notes[i].start - notes[i-1].start > 0.01 and i > 0):
-            #print()
             end = notes[i-1]
-            chords = np.append(chords, [start,end])
+            #chords = np.append(chords, start)
             if (start.pitch < end.pitch):
                 print("downstrum\n")
+                chords = np.append(chords, Chord(start.start,False))
             else:
                 print("upstrum\n")
+                chords = np.append(chords, Chord(start.start,True))
             start = notes[i]
             
         freq = midi.note_number_to_hz(notes[i].pitch)
         print(convertToNote(freq, name), freq, notes[i])
 
-    if (start.pitch < notes[notes.size-1].pitch):
+    #chords = np.append(chords, start)
+    if (start.pitch < notes[n-1].pitch):
         print("downstrum\n")
+        chords = np.append(chords, Chord(start.start,False))
     else:
         print("upstrum\n")
-
-    # strum direction
-    #for chord in chords:
-    #    if (chord[0].pitch < chord[1].pitch):
-    #        print("downstrum\n")
-    #    else:
-    #        print("upstrum\n")
-
-
-    #if (notes.size > 1):
-    #    if (notes[0].pitch < notes[n-1].pitch):
-    #        print("downstrum\n")
-    #    else:
-    #        print("upstrum\n")
+        chords = np.append(chords, Chord(start.start,True))
