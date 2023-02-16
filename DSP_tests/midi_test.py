@@ -1,3 +1,4 @@
+from math import log2, pow
 import numpy as np
 import pretty_midi as midi
 
