@@ -1,9 +1,4 @@
-import soundfile as sf
-import math
-from math import log2, pow
 import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.pyplot import cm
 import pretty_midi as midi
 
 
