@@ -146,77 +146,77 @@ def play():
         root.update()
 #        if songTime in strums.keys():
 #            if strums[songTime] == "up":
-        while playFlag == 1:
-            if metroStrumFlag and metroInit:
-                metro.strum("down")
-            upstrum_label3.config(bg="white",fg="white")
-            downstrum_label1.config(bg="green",fg="green")
-            time.sleep(0.4)
-            root.update()
-            if playFlag == 0:
-                downstrum_label1.config(bg="white",fg="white")
-                root.update()
-                break
-
-            if metroStrumFlag and metroInit:
-                metro.strum("down")
-            downstrum_label1.config(bg="white",fg="white")
-            downstrum_label2.config(bg="green",fg="green")
-            time.sleep(0.2)
-            root.update()
-            if playFlag == 0:
-                downstrum_label2.config(bg="white",fg="white")
-                root.update()
-                break
-#           else:
-            if metroStrumFlag and metroInit:
-                metro.strum("up")
-            downstrum_label2.config(bg="white",fg="white")
-            upstrum_label1.config(bg="green", fg="green")
-            time.sleep(0.5)
-            root.update()
-            if playFlag == 0:
-                upstrum_label1.config(bg="white",fg="white")
-                root.update()
-                break
-
-            if metroStrumFlag and metroInit:
-                metro.strum("up")
-            upstrum_label1.config(bg="white", fg="white")
-            upstrum_label2.config(bg="green",fg="green")
-            time.sleep(0.2)
-            root.update()
-            if playFlag == 0:
-                upstrum_label2.config(bg="white",fg="white")
-                root.update()
-                break
-
-            if metroStrumFlag and metroInit:
-                metro.strum("down")
-            upstrum_label2.config(bg="white",fg="white")
-            downstrum_label3.config(bg="green",fg="green")
-            time.sleep(0.2)
-            root.update()
-            if playFlag == 0:
-                downstrum_label3.config(bg="white",fg="white")
-                root.update()
-                break
-
-            if metroStrumFlag and metroInit:
-                metro.strum("up")
-            downstrum_label3.config(bg="white",fg="white")
-            upstrum_label3.config(bg="green",fg="green")
-            time.sleep(0.2)
-            root.update()
-
-            if playFlag == 0:
-                downstrum_label3.config(bg="white",fg="white")
-                root.update()
-                break
-
-            if metroOnFlag and metroInit:
-                metro.set_bpm(metro.calculate_bpm(soundFile))
-                metro.play()
+        #while playFlag == 1:
+        #    if metroStrumFlag and metroInit:
+        #        metro.strum("down")
+        #    upstrum_label3.config(bg="white",fg="white")
+        #    downstrum_label1.config(bg="green",fg="green")
+        #    time.sleep(0.4)
+        #    root.update()
+        #    if playFlag == 0:
+        #        downstrum_label1.config(bg="white",fg="white")
+        #        root.update()
+        #        break
+#
+        #    if metroStrumFlag and metroInit:
+        #        metro.strum("down")
+        #    downstrum_label1.config(bg="white",fg="white")
+        #    downstrum_label2.config(bg="green",fg="green")
+        #    time.sleep(0.2)
+        #    root.update()
+        #    if playFlag == 0:
+        #        downstrum_label2.config(bg="white",fg="white")
+        #        root.update()
+        #        break
+#       #    else:
+        #    if metroStrumFlag and metroInit:
+        #        metro.strum("up")
+        #    downstrum_label2.config(bg="white",fg="white")
+        #    upstrum_label1.config(bg="green", fg="green")
+        #    time.sleep(0.5)
+        #    root.update()
+        #    if playFlag == 0:
+        #        upstrum_label1.config(bg="white",fg="white")
+        #        root.update()
+        #        break
+#
+        #    if metroStrumFlag and metroInit:
+        #        metro.strum("up")
+        #    upstrum_label1.config(bg="white", fg="white")
+        #    upstrum_label2.config(bg="green",fg="green")
+        #    time.sleep(0.2)
+        #    root.update()
+        #    if playFlag == 0:
+        #        upstrum_label2.config(bg="white",fg="white")
+        #        root.update()
+        #        break
+#
+        #    if metroStrumFlag and metroInit:
+        #        metro.strum("down")
+        #    upstrum_label2.config(bg="white",fg="white")
+        #    downstrum_label3.config(bg="green",fg="green")
+        #    time.sleep(0.2)
+        #    root.update()
+        #    if playFlag == 0:
+        #        downstrum_label3.config(bg="white",fg="white")
+        #        root.update()
+        #        break
+#
+        #    if metroStrumFlag and metroInit:
+        #        metro.strum("up")
+        #    downstrum_label3.config(bg="white",fg="white")
+        #    upstrum_label3.config(bg="green",fg="green")
+        #    time.sleep(0.2)
+        #    root.update()
+#
+        #    if playFlag == 0:
+        #        downstrum_label3.config(bg="white",fg="white")
+        #        root.update()
+        #        break
+#
+        #    if metroOnFlag and metroInit:
+        #        metro.set_bpm(metro.calculate_bpm(soundFile))
+        #        metro.play()
                     
 
 def pause():
@@ -298,52 +298,102 @@ def metronome_strum_disen():
         
 def display_strum_pattern():
     global soundFile
+    global playFlag
     
     print("Hi")
     print(soundFile)
     if soundFile:
         strums = generateStrums(soundFile)
         
-        iter = strums // 6
+        iter = len(strums) // 6
         
         print("Iter: ", iter)
         
         music_time = mixer.music.get_pos() // 10
-        for i in range(len(iter)):
-            if(strums[i].strum == False):
+        for i in range(0,iter):
+            print('i: ', i)
+            print('strums[', i*6 + 0, ']: ', strums[i*6 + 0].strum, ', time: ', strums[i + 0].start)
+            print('strums[', i*6 + 1, ']: ', strums[i*6 + 1].strum, ', time: ', strums[i + 1].start)
+            print('strums[', i*6 + 2, ']: ', strums[i*6 + 2].strum, ', time: ', strums[i + 2].start)
+            print('strums[', i*6 + 3, ']: ', strums[i*6 + 3].strum, ', time: ', strums[i + 3].start)
+            print('strums[', i*6 + 4, ']: ', strums[i*6 + 4].strum, ', time: ', strums[i + 4].start)
+            print('strums[', i*6 + 5, ']: ', strums[i*6 + 5].strum, ', time: ', strums[i + 5].start)
+
+            if(strums[i*6].strum == False):
+                print('down')
                 downstrum_label1.place(x=100,y=450)
+                upstrum_label1.place(x=6000,y=450)
+                #root.update()
             else:
+                print('up')
                 upstrum_label1.place(x=100,y=450)
-                
-            if(strums[i+1].strum == False):
-                downstrum_label2.place(x=350,y=450)
-            else:
+                downstrum_label1.place(x=6000,y=450)
+                #root.update()
+            
+            if(strums[i*6+1].strum):
+                print('up')
                 upstrum_label2.place(x=350,y=450)
+                downstrum_label2.place(x=6500,y=450)
+                #root.update()
+            else:
+                print('down')
+                downstrum_label2.place(x=350,y=450)
+                upstrum_label2.place(x=6500,y=450)
+                #root.update()
+            
                 
-            if(strums[i+2].strum == False):
+            if(strums[i*6+2].strum == False):
+                print('down')
                 downstrum_label3.place(x=600,y=450)
+                upstrum_label3.place(x=6000,y=450)
+                #root.update()
             else:
+                print('up')
                 upstrum_label3.place(x=600,y=450)
+                downstrum_label3.place(x=6000,y=450)
+                #root.update()
                 
-            if(strums[i+3].strum == False):
+            if(strums[i*6+3].strum == False):
+                print('down')
                 downstrum_label4.place(x=850,y=450)
+                upstrum_label4.place(x=8500,y=450)
+                #root.update()
             else:
+                print('up')
                 upstrum_label4.place(x=850,y=450)
+                downstrum_label4.place(x=8500,y=450)
+                #root.update()
                 
-            if(strums[i+4].strum == False):
+            if(strums[i*6+4].strum == False):
+                print('down')
                 downstrum_label5.place(x=1100,y=450)
+                upstrum_label5.place(x=11000,y=450)
+                #root.update()
             else:
+                print('up')
                 upstrum_label5.place(x=1100,y=450)
+                downstrum_label5.place(x=11000,y=450)
+                #root.update()
                 
-            if(strums[i+5].strum == False):
+            if(strums[i*6+5].strum == False):
+                print('down')
                 downstrum_label6.place(x=1350,y=450)
+                upstrum_label6.place(x=13500,y=450)
+                #root.update()
             else:
+                print('up')
                 upstrum_label6.place(x=1350,y=450)
+                downstrum_label6.place(x=13500,y=450)
+                #root.update()
                 
             root.update()
                 
-            while(music_time < strums[i+5].start):
-                pass
+            print('playFlag: ', playFlag, ', music time: ', music_time, ', strums[5]: ', strums[i*6+5].start)
+            while(playFlag and music_time < strums[i*6+5].start):
+                music_time = mixer.music.get_pos() // 10
+
+            if playFlag == False:
+                break
                 
         root.update()
         
