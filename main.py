@@ -300,97 +300,146 @@ def display_strum_pattern():
     global soundFile
     global playFlag
     
-    print("Hi")
-    print(soundFile)
+    #print("Hi")
+    #print(soundFile)
     if soundFile:
         strums = generateStrums(soundFile)
         
         iter = len(strums) // 6
         
-        print("Iter: ", iter)
+        #print("Iter: ", iter)
         
         music_time = mixer.music.get_pos() // 10
         for i in range(0,iter):
-            print('i: ', i)
-            print('strums[', i*6 + 0, ']: ', strums[i*6 + 0].strum, ', time: ', strums[i + 0].start)
-            print('strums[', i*6 + 1, ']: ', strums[i*6 + 1].strum, ', time: ', strums[i + 1].start)
-            print('strums[', i*6 + 2, ']: ', strums[i*6 + 2].strum, ', time: ', strums[i + 2].start)
-            print('strums[', i*6 + 3, ']: ', strums[i*6 + 3].strum, ', time: ', strums[i + 3].start)
-            print('strums[', i*6 + 4, ']: ', strums[i*6 + 4].strum, ', time: ', strums[i + 4].start)
-            print('strums[', i*6 + 5, ']: ', strums[i*6 + 5].strum, ', time: ', strums[i + 5].start)
+            #print('i: ', i)
+            #print('strums[', i*6 + 0, ']: ', strums[i*6 + 0].strum, ', time: ', strums[i + 0].start)
+            #print('strums[', i*6 + 1, ']: ', strums[i*6 + 1].strum, ', time: ', strums[i + 1].start)
+            #print('strums[', i*6 + 2, ']: ', strums[i*6 + 2].strum, ', time: ', strums[i + 2].start)
+            #print('strums[', i*6 + 3, ']: ', strums[i*6 + 3].strum, ', time: ', strums[i + 3].start)
+            #print('strums[', i*6 + 4, ']: ', strums[i*6 + 4].strum, ', time: ', strums[i + 4].start)
+            #print('strums[', i*6 + 5, ']: ', strums[i*6 + 5].strum, ', time: ', strums[i + 5].start)
 
             if(strums[i*6].strum == False):
-                print('down')
+                #print('down')
                 downstrum_label1.place(x=100,y=450)
                 upstrum_label1.place(x=6000,y=450)
                 #root.update()
             else:
-                print('up')
+                #print('up')
                 upstrum_label1.place(x=100,y=450)
                 downstrum_label1.place(x=6000,y=450)
                 #root.update()
             
             if(strums[i*6+1].strum):
-                print('up')
+                #print('up')
                 upstrum_label2.place(x=350,y=450)
                 downstrum_label2.place(x=6500,y=450)
                 #root.update()
             else:
-                print('down')
+                #print('down')
                 downstrum_label2.place(x=350,y=450)
                 upstrum_label2.place(x=6500,y=450)
                 #root.update()
             
                 
             if(strums[i*6+2].strum == False):
-                print('down')
+                #print('down')
                 downstrum_label3.place(x=600,y=450)
                 upstrum_label3.place(x=6000,y=450)
                 #root.update()
             else:
-                print('up')
+                #print('up')
                 upstrum_label3.place(x=600,y=450)
                 downstrum_label3.place(x=6000,y=450)
                 #root.update()
                 
             if(strums[i*6+3].strum == False):
-                print('down')
+                #print('down')
                 downstrum_label4.place(x=850,y=450)
                 upstrum_label4.place(x=8500,y=450)
                 #root.update()
             else:
-                print('up')
+                #print('up')
                 upstrum_label4.place(x=850,y=450)
                 downstrum_label4.place(x=8500,y=450)
                 #root.update()
                 
             if(strums[i*6+4].strum == False):
-                print('down')
+                #print('down')
                 downstrum_label5.place(x=1100,y=450)
                 upstrum_label5.place(x=11000,y=450)
                 #root.update()
             else:
-                print('up')
+                #print('up')
                 upstrum_label5.place(x=1100,y=450)
                 downstrum_label5.place(x=11000,y=450)
                 #root.update()
                 
             if(strums[i*6+5].strum == False):
-                print('down')
+                #print('down')
                 downstrum_label6.place(x=1350,y=450)
                 upstrum_label6.place(x=13500,y=450)
                 #root.update()
             else:
-                print('up')
+                #print('up')
                 upstrum_label6.place(x=1350,y=450)
                 downstrum_label6.place(x=13500,y=450)
                 #root.update()
                 
             root.update()
                 
-            print('playFlag: ', playFlag, ', music time: ', music_time, ', strums[5]: ', strums[i*6+5].start)
-            while(playFlag and music_time < strums[i*6+5].start):
+            #print('playFlag: ', playFlag, ', music time: ', music_time, ', strums[5]: ', strums[i*6+5].start)
+            while(playFlag and music_time <= strums[i*6+5].start):
                 music_time = mixer.music.get_pos() // 10
+
+                for j in range(0, 5):
+                    if music_time < strums[i*6+j+1].start and music_time >= strums[i*6+j].start:
+                        print(j)
+                        if j == 0:
+                            downstrum_label6.config(bg="white",fg="white")
+                            upstrum_label6.config(bg="white",fg="white")
+
+                            downstrum_label1.config(bg="green",fg="green")
+                            upstrum_label1.config(bg="green",fg="green")
+                        elif j == 1:
+                            downstrum_label1.config(bg="white",fg="white")
+                            upstrum_label1.config(bg="white",fg="white")
+
+                            downstrum_label2.config(bg="green",fg="green")
+                            upstrum_label2.config(bg="green",fg="green")
+                        elif j == 2:
+                            downstrum_label2.config(bg="white",fg="white")
+                            upstrum_label2.config(bg="white",fg="white")
+
+                            downstrum_label3.config(bg="green",fg="green")
+                            upstrum_label3.config(bg="green",fg="green")
+                        elif j == 3:
+                            downstrum_label3.config(bg="white",fg="white")
+                            upstrum_label3.config(bg="white",fg="white")
+
+                            downstrum_label4.config(bg="green",fg="green")
+                            upstrum_label4.config(bg="green",fg="green")
+                        elif j == 4:
+                            downstrum_label4.config(bg="white",fg="white")
+                            upstrum_label4.config(bg="white",fg="white")
+
+                            downstrum_label5.config(bg="green",fg="green")
+                            upstrum_label5.config(bg="green",fg="green")
+                        elif j == 5:
+                            downstrum_label5.config(bg="white",fg="white")
+                            upstrum_label5.config(bg="white",fg="white")
+
+                            downstrum_label6.config(bg="green",fg="green")
+                            upstrum_label6.config(bg="green",fg="green")
+
+                if music_time < strums[i*6+6].start and music_time >= strums[i*6+5].start:
+                    downstrum_label5.config(bg="white",fg="white")
+                    upstrum_label5.config(bg="white",fg="white")
+
+                    downstrum_label6.config(bg="green",fg="green")
+                    upstrum_label6.config(bg="green",fg="green")
+
+                root.update()
 
             if playFlag == False:
                 break
