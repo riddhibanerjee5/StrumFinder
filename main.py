@@ -44,7 +44,7 @@ metroStrumFlag = 0
 playFlag = 0
 metroInit = 0
 
-############################### Images ################################
+################################################ Images ##########################################################################
 #frame = Frame(root, width=50, height=50)
 # frame.pack()
 #frame.place(anchor='center', relx=0.5, rely=0.5)
@@ -62,28 +62,47 @@ play_button_image = ImageTk.PhotoImage(Image.open("./images/play-64.png"))
 pause_button_image = ImageTk.PhotoImage(Image.open("./images/pause-64.png"))
 restart_button_image = ImageTk.PhotoImage(Image.open("./images/rewind-64.png"))
     
+# At most, can have six of the same strums on the screen at a time
 downstrum_label1 = Label(image=downstrum,height=100,width=100)
 downstrum_label2 = Label(image=downstrum,height=100,width=100)
-#downstrum_label1.config(bg="green", fg="green")
+downstrum_label3 = Label(image=downstrum,height=100,width=100)
+downstrum_label4 = Label(image=downstrum,height=100,width=100)
+downstrum_label5 = Label(image=downstrum,height=100,width=100)
+downstrum_label6 = Label(image=downstrum,height=100,width=100)
     
 downstrum_label1.image = downstrum
 downstrum_label2.image = downstrum
+downstrum_label3.image = downstrum
+downstrum_label4.image = downstrum
+downstrum_label5.image = downstrum
+downstrum_label6.image = downstrum
     
 upstrum_label1 = Label(image=upstrum,height=100,width=100)
 upstrum_label2 = Label(image=upstrum,height=100,width=100)
+upstrum_label3 = Label(image=upstrum,height=100,width=100)
+upstrum_label4 = Label(image=upstrum,height=100,width=100)
+upstrum_label5 = Label(image=upstrum,height=100,width=100)
+upstrum_label6 = Label(image=upstrum,height=100,width=100)
     
 upstrum_label1.image = upstrum
 upstrum_label2.image = upstrum
-    
-downstrum_label3 = Label(image=downstrum,height=100,width=100)
-downstrum_label3.image = downstrum
-    
-upstrum_label3 = Label(image=upstrum,height=100,width=100)
 upstrum_label3.image = upstrum
-#######################################################################
+upstrum_label4.image = upstrum
+upstrum_label5.image = upstrum
+upstrum_label6.image = upstrum
+    
+##################################################################################################################################
+
+################################################# TEST VARIABLES #################################################################
+
+strum1 = [8,8,12,5,20,20] # down, down, up, down, up, up
+strum2 = [2,2,2,2,2,11]   # down, down, down, down, down, up
+strum3 = [15,15,15,1,1,1] # up, up, up, down, down, down
+
+##################################################################################################################################
 
 
-############################## FUNCTIONS ########################################
+################################################# FUNCTIONS ######################################################################
 
 def openFile():
     select_file_button.configure(bg="green")
@@ -95,8 +114,8 @@ def openFile():
     global playSound
     soundFile = filedialog.askopenfilename(initialdir="/",
                                            title="Select a File",
-                                           filetypes=(("wav files",
-                                                      "*.wav*"),
+                                           filetypes=(("midi files",
+                                                      "*.mid*"),
                                                       ))
     playSound = mixer.music.load(soundFile)
 
@@ -106,22 +125,6 @@ def play():
     global metroOnFlag
     global playFlag
     
-    # if(play_button.configure(image=play_button_image)):
-    #     playFlag == 1
-    
-    # if pauseFlag == 1:
-    #     play_button.configure(image=play_button_image)
-    #     root.update()
-        
-    #     mixer.music.pause()
-
-    #     if metroOnFlag and metroInit:
-    #         metro.pause()
-
-    #     pauseFlag = 0
-    #     playFlag = 1
-    
-#    if playFlag == 1:
     playFlag = 1
     play_button.configure(bg="green")
     stop_button.configure(bg=colors["magicMint"])
@@ -257,7 +260,6 @@ def restart():
 #     generateNotes(soundFile)
 #     startfile("notes.txt")
 
-
 def serial():
     global metroOnFlag
     global metroInit
@@ -292,16 +294,50 @@ def metronome_strum_disen():
     global metroStrumFlag
     metroStrumFlag = 0
         
-def display_strum_pattern():
-    downstrum_label1.place(x=100,y=450)
-    downstrum_label2.place(x=350,y=450)
-    upstrum_label1.place(x=600,y=450)
-    upstrum_label2.place(x=850,y=450)
-    downstrum_label3.place(x=1100,y=450)
-    upstrum_label3.place(x=1350,y=450)
+def display_strum_pattern(strums):
+    if(strums[0] < 10):
+        downstrum_label1.place(x=100,y=450)
+    if(strums[0] > 10):
+        upstrum_label1.place(x=100,y=450)
+        
+    if(strums[1] < 10):
+        downstrum_label2.place(x=350,y=450)
+    if(strums[1] > 10):
+        upstrum_label2.place(x=350,y=450)
+        
+    if(strums[2] < 10):
+        downstrum_label3.place(x=600,y=450)
+    if(strums[2] > 10):
+        upstrum_label3.place(x=600,y=450)
+        
+    if(strums[3] < 10):
+        downstrum_label4.place(x=850,y=450)
+    if(strums[3] > 10):
+        upstrum_label4.place(x=850,y=450)
+        
+    if(strums[4] < 10):
+        downstrum_label5.place(x=1100,y=450)
+    if(strums[4] > 10):
+        upstrum_label5.place(x=1100,y=450)
+        
+    if(strums[5] < 10):
+        downstrum_label6.place(x=1350,y=450)
+    if(strums[5] > 10):
+        upstrum_label6.place(x=1350,y=450)
+        
+    root.update()
+        
     
-#def play_strums():
+            
+    # downstrum_label1.place(x=100,y=450)
+    # downstrum_label2.place(x=350,y=450)
+    # upstrum_label1.place(x=600,y=450)
+    # upstrum_label2.place(x=850,y=450)
+    # downstrum_label3.place(x=1100,y=450)
+    # upstrum_label3.place(x=1350,y=450)
     
+def play_strums():
+    test = 1
     
         
 # def display_strums():
@@ -342,8 +378,10 @@ def display_strum_pattern():
 #            xaxis-=1        
 
 
-##################################################################################
-##################### ORIGINAL SONG ####################################
+#################################################################################################################################
+
+
+################################################ ORIGINAL SONG ##################################################################
 button_width_apart = 400
 
 original_song_label = Label(root, text="Original Song", font=(
@@ -367,17 +405,16 @@ restart_button = Button(root, text="Restart Song", font=(
     "Helvetica", 16), relief=GROOVE, command=restart, bg=colors["magicMint"], image=restart_button_image, borderwidth=0)
 restart_button.place(y=200, x=100+(3*button_width_apart))
 
-#########################################################################
+################################################################################################################################
 
 
-###################### GENERATING STRUM PATTERNS ########################
+############################################## GENERATING STRUM PATTERNS #######################################################
 strum_pattern_label = Label(root, text="Strum Pattern", font=(
     "Helvetica", 25, "bold"), bg=colors["white"], fg=colors["orangeSoda"])
 strum_pattern_label.place(y=300, x=650)
 
-# TO DO: Add functionality on press
 generate_patterns_button = Button(root, text="Generate Strum Patterns", font=(
-    "Helvetica", 16), relief=GROOVE, command=display_strum_pattern,bg=colors["languidLavender"])
+    "Helvetica", 16), relief=GROOVE, command=display_strum_pattern(strum3),bg=colors["languidLavender"])
 generate_patterns_button.place(y=380, x=100)
 
 #generate_patterns_button = Button(root, text="Generate Notes", font=(
@@ -393,10 +430,10 @@ generate_patterns_button.place(y=380, x=100)
 #    "Helvetica", 16), relief=GROOVE, command=show_graph, bg=colors["languidLavender"])
 #show_graph_button.place(y=380, x=1300)
 
-#########################################################################
+#################################################################################################################################
 
 
-######################### METRONOME #####################################
+############################################## METRONOME ########################################################################
 buttons_width_apart = 50
 
 metronome_label = Label(root, text="Metronome", font=(
@@ -422,6 +459,6 @@ metronome_strum_on_button.place(y=675, x=100+3*button_width_apart)
 metronome_strum_off_button = Button(root, text="Strums Disable", font=(
     "Helvetica", 16), relief=GROOVE, command=metronome_strum_disen, bg=colors["mustard"])
 metronome_strum_off_button.place(y=750, x=700)
-#########################################################################
+#################################################################################################################################
 
 root.mainloop()
