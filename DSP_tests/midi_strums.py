@@ -18,46 +18,49 @@ def convertToNote(f, name):
     return name[n] + str(octave)
 
 
-name = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
+def generateStrums(filename):
+    name = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
 
-x = midi.PrettyMIDI('faster_strums.mid')
-chords = np.array([])
+    x = midi.PrettyMIDI(filename)
+    chords = np.array([])
 
-convert = True
-if (convert):
-    combined = midi.Instrument(program=0)
+    convert = True
+    if (convert):
+        combined = midi.Instrument(program=0)
+        for instrument in x.instruments:
+            for note in instrument.notes:
+                combined.notes.append(note)
+        x.instruments = [combined]
+
+    i = 0
     for instrument in x.instruments:
-        for note in instrument.notes:
-            combined.notes.append(note)
-    x.instruments = [combined]
+        print("Instrument", i, instrument.name)
+        i += 1
+        notes = np.array(instrument.notes)
+        indices = np.argsort([note.start for note in notes])
+        notes = notes[indices]
+        
+        start = notes[0]
+        n = notes.size
+        for i in range(len(notes[0:n])):
+            if (notes[i].start - notes[i-1].start > 0.01 and i > 0):
+                end = notes[i-1]
+                if (start.pitch < end.pitch):
+                    print("downstrum\n")
+                    chords = np.append(chords, Chord(start.start,False))
+                else:
+                    print("upstrum\n")
+                    chords = np.append(chords, Chord(start.start,True))
+                start = notes[i]
+                
+            freq = midi.note_number_to_hz(notes[i].pitch)
+            print(convertToNote(freq, name), freq, notes[i])
 
-i = 0
-for instrument in x.instruments:
-    print("Instrument", i, instrument.name)
-    i += 1
-    notes = np.array(instrument.notes)
-    indices = np.argsort([note.start for note in notes])
-    notes = notes[indices]
-    
-    start = notes[0]
-    n = notes.size
-    for i in range(len(notes[0:n])):
-        if (notes[i].start - notes[i-1].start > 0.01 and i > 0):
-            end = notes[i-1]
-            if (start.pitch < end.pitch):
-                print("downstrum\n")
-                chords = np.append(chords, Chord(start.start,False))
-            else:
-                print("upstrum\n")
-                chords = np.append(chords, Chord(start.start,True))
-            start = notes[i]
-            
-        freq = midi.note_number_to_hz(notes[i].pitch)
-        print(convertToNote(freq, name), freq, notes[i])
+        if (start.pitch < notes[n-1].pitch):
+            print("downstrum\n")
+            chords = np.append(chords, Chord(start.start,False))
+        else:
+            print("upstrum\n")
+            chords = np.append(chords, Chord(start.start,True))
 
-    if (start.pitch < notes[n-1].pitch):
-        print("downstrum\n")
-        chords = np.append(chords, Chord(start.start,False))
-    else:
-        print("upstrum\n")
-        chords = np.append(chords, Chord(start.start,True))
+    return chords
