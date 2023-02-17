@@ -7,6 +7,7 @@ import multiprocessing
 from tkinter import filedialog, simpledialog
 from PIL import ImageTk, Image
 from pygame import mixer
+from midi_strums import generateStrums
 #from stft_chirp import show_graph
 #from stft import generateNotes
 from strum import generate_strums
@@ -43,6 +44,7 @@ metroOnFlag = 0
 metroStrumFlag = 0
 playFlag = 0
 metroInit = 0
+soundFile = None
 
 ################################################ Images ##########################################################################
 #frame = Frame(root, width=50, height=50)
@@ -294,38 +296,56 @@ def metronome_strum_disen():
     global metroStrumFlag
     metroStrumFlag = 0
         
-def display_strum_pattern(strums):
-    if(strums[0] < 10):
-        downstrum_label1.place(x=100,y=450)
-    if(strums[0] > 10):
-        upstrum_label1.place(x=100,y=450)
+def display_strum_pattern():
+    global soundFile
+    
+    print("Hi")
+    print(soundFile)
+    if soundFile:
+        strums = generateStrums(soundFile)
         
-    if(strums[1] < 10):
-        downstrum_label2.place(x=350,y=450)
-    if(strums[1] > 10):
-        upstrum_label2.place(x=350,y=450)
+        iter = strums // 6
         
-    if(strums[2] < 10):
-        downstrum_label3.place(x=600,y=450)
-    if(strums[2] > 10):
-        upstrum_label3.place(x=600,y=450)
+        print("Iter: ", iter)
         
-    if(strums[3] < 10):
-        downstrum_label4.place(x=850,y=450)
-    if(strums[3] > 10):
-        upstrum_label4.place(x=850,y=450)
-        
-    if(strums[4] < 10):
-        downstrum_label5.place(x=1100,y=450)
-    if(strums[4] > 10):
-        upstrum_label5.place(x=1100,y=450)
-        
-    if(strums[5] < 10):
-        downstrum_label6.place(x=1350,y=450)
-    if(strums[5] > 10):
-        upstrum_label6.place(x=1350,y=450)
-        
-    root.update()
+        music_time = mixer.music.get_pos() // 10
+        for i in range(len(iter)):
+            if(strums[i].strum == False):
+                downstrum_label1.place(x=100,y=450)
+            else:
+                upstrum_label1.place(x=100,y=450)
+                
+            if(strums[i+1].strum == False):
+                downstrum_label2.place(x=350,y=450)
+            else:
+                upstrum_label2.place(x=350,y=450)
+                
+            if(strums[i+2].strum == False):
+                downstrum_label3.place(x=600,y=450)
+            else:
+                upstrum_label3.place(x=600,y=450)
+                
+            if(strums[i+3].strum == False):
+                downstrum_label4.place(x=850,y=450)
+            else:
+                upstrum_label4.place(x=850,y=450)
+                
+            if(strums[i+4].strum == False):
+                downstrum_label5.place(x=1100,y=450)
+            else:
+                upstrum_label5.place(x=1100,y=450)
+                
+            if(strums[i+5].strum == False):
+                downstrum_label6.place(x=1350,y=450)
+            else:
+                upstrum_label6.place(x=1350,y=450)
+                
+            root.update()
+                
+            while(music_time < strums[i+5].start):
+                pass
+                
+        root.update()
         
     
             
@@ -414,7 +434,7 @@ strum_pattern_label = Label(root, text="Strum Pattern", font=(
 strum_pattern_label.place(y=300, x=650)
 
 generate_patterns_button = Button(root, text="Generate Strum Patterns", font=(
-    "Helvetica", 16), relief=GROOVE, command=display_strum_pattern(strum3),bg=colors["languidLavender"])
+    "Helvetica", 16), relief=GROOVE, command=display_strum_pattern,bg=colors["languidLavender"])
 generate_patterns_button.place(y=380, x=100)
 
 #generate_patterns_button = Button(root, text="Generate Notes", font=(
