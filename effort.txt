@@ -117,4 +117,13 @@ Kendall
 	(6 hrs)
  - 1/26: Continued converting GUI to pygame. (4 hrs)
  - 1/27: Finishing touches on both the TKinter and pygame GUI (7 hrs)
+ - 2/1: Tried to get the speaker to work with our existing code base (3 hrs)
+ - 2/4: Tested the metronome (5 hrs)
+ - 2/6: Debugging the pygame GUI because we know that we need a better GUI (3 hrs)
+ - 2/8: Keep debugging the pygame GUI because we know that we need a better GUI (3 hrs)
+ - 2/13: Researching different methods and examples for strum and chord detection (4 hrs)
+ - 2/14: Keep researching different methods for the signal processing (4 hrs)
+ - 2/16: Create the strumming pattern algorithm for the GUI and updated
+		 the GUI for the metronome (5 hrs)
+ - 2/17: Last minute touches on the GUI (2 hrs)
          
