@@ -5,8 +5,6 @@ from tkinter import *
 import multiprocessing
 from tkinter import filedialog, simpledialog
 from PIL import ImageTk, Image
-from stft_chirp import show_graph
-from stft import generateNotes
 from strum import generate_strums
 import pygame, sys
 
@@ -142,11 +140,12 @@ while True:
 
             if buttons["sel_file"].collidepoint(pos[0], pos[1]):
                 
-                soundFile = filedialog.askopenfilename(initialdir="/",
-                                           title="Select a File",
-                                           filetypes=(("wav files",
-                                                      "*.wav*"),
-                                                      ))
+                #soundFile = filedialog.askopenfilename(initialdir="/",
+                #                           title="Select a File",
+                #                           filetypes=(("wav files",
+                #                                      "*.wav*"),
+                #                                      ))
+                soundFile = 'wav-files/You and I - Ingrid Michaelson.wav'
                 playSound = pygame.mixer.music.load(soundFile)
                 bpm = metro.calculate_bpm(soundFile)
 
@@ -181,7 +180,6 @@ while True:
             elif buttons["play_pattern"].collidepoint(pos[0], pos[1]):
                 strum_showing_flag = not strum_showing_flag
                 if soundFile:
-                    notes = generateNotes(soundFile)
                     strums, times = generate_strums()
 
                     
@@ -205,7 +203,7 @@ while True:
     # False = up, True = down
     if music_playing_flag and strum_showing_flag: 
         music_time = pygame.mixer.music.get_pos() // 10
-        #print(music_time)
+        print(music_time)
 
         if music_time in strums.keys():
             if strums[music_time] == "up":
