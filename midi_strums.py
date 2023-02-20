@@ -69,6 +69,11 @@ def generateStrums(filename):
 
     return chords
 
+def getMidiBpm(filename):
+    x = midi.PrettyMIDI(filename)
+    return x.estimate_tempo()
+
+
 
     
 #chords = generateStrums('DSP_tests/faster_strums.mid')

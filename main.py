@@ -7,10 +7,9 @@ import multiprocessing
 from tkinter import filedialog, simpledialog
 from PIL import ImageTk, Image
 from pygame import mixer
-from midi_strums import generateStrums
+from midi_strums import generateStrums, getMidiBpm
 #from stft_chirp import show_graph
 #from stft import generateNotes
-from strum import generate_strums
 mixer.init()
 
 colors = {"turqoise": "#55D6BE",
@@ -119,7 +118,7 @@ def openFile():
     soundFile = filedialog.askopenfilename(initialdir="/",
                                            title="Select a File",
                                            filetypes=(("midi files",
-                                                      "*.mid*"),
+                                                      "*.mid*",),("wav files", "*.wav")
                                                       ))
     playSound = mixer.music.load(soundFile)
 
@@ -137,14 +136,23 @@ def play():
     root.update()
     if soundFile:
         songTime = mixer.music.get_pos() // 10
-        strums, times = generate_strums()
         if pauseFlag == 1:
-            if metroOnFlag and metro != None:
-                metro.unpause(metro.calculate_bpm(soundFile), songTime)
+            if metroOnFlag and metro != None and not metroStrumFlag:
+                if (soundFile.find(".wav") != -1):
+                    metro.unpause(metro.calculate_bpm(soundFile), songTime)
+                else:
+                    metro.unpause(getMidiBpm(soundFile), songTime)
 
             mixer.music.unpause()
         else:
-                mixer.music.play()
+            if metroOnFlag and metro != None and not metroStrumFlag:
+                if (soundFile.find(".wav") != -1):
+                    metro.set_bpm(metro.calculate_bpm(soundFile))
+                else:
+                    metro.set_bpm(getMidiBpm(soundFile))
+                metro.play()
+
+            mixer.music.play()
         root.update()
 #        if songTime in strums.keys():
 #            if strums[songTime] == "up":
@@ -311,6 +319,7 @@ def display_strum_pattern():
     
     #print("Hi")
     #print(soundFile)
+    #print(metroStrumFlag)
     if soundFile:
         strums = generateStrums(soundFile)
         
@@ -403,7 +412,7 @@ def display_strum_pattern():
 
                 for j in range(0, 5):
                     if music_time < strums[i*6+j+1].start and music_time >= strums[i*6+j].start:
-                        print(j)
+                        #print(j)
                         if j == 0:
                             downstrum_label6.config(bg="white",fg="white")
                             upstrum_label6.config(bg="white",fg="white")
@@ -411,7 +420,7 @@ def display_strum_pattern():
                             downstrum_label1.config(bg="green",fg="green")
                             upstrum_label1.config(bg="green",fg="green")
 
-                            if metroStrumFlag:
+                            if metroOnFlag and metroStrumFlag:
                                 if last_strum != 0:
                                     if strums[i*6].strum:
                                         metro.strum('up')
@@ -427,7 +436,7 @@ def display_strum_pattern():
                             downstrum_label2.config(bg="green",fg="green")
                             upstrum_label2.config(bg="green",fg="green")
 
-                            if metroStrumFlag:
+                            if metroStrumFlag and metroOnFlag:
                                 if last_strum != 1:
                                     if strums[i*6+1].strum:
                                         metro.strum('up')
@@ -443,7 +452,7 @@ def display_strum_pattern():
                             downstrum_label3.config(bg="green",fg="green")
                             upstrum_label3.config(bg="green",fg="green")
 
-                            if metroStrumFlag:
+                            if metroStrumFlag and metroOnFlag:
                                 if last_strum != 2:
                                     if strums[i*6+2].strum:
                                         metro.strum('up')
@@ -459,7 +468,7 @@ def display_strum_pattern():
                             downstrum_label4.config(bg="green",fg="green")
                             upstrum_label4.config(bg="green",fg="green")
 
-                            if metroStrumFlag:
+                            if metroStrumFlag and metroOnFlag:
                                 if last_strum != 3:
                                     if strums[i*6+3].strum:
                                         metro.strum('up')
@@ -475,7 +484,7 @@ def display_strum_pattern():
                             downstrum_label5.config(bg="green",fg="green")
                             upstrum_label5.config(bg="green",fg="green")
 
-                            if metroStrumFlag:
+                            if metroStrumFlag and metroOnFlag:
                                 if last_strum != 4:
                                     if strums[i*6+4].strum:
                                         metro.strum('up')
@@ -491,7 +500,7 @@ def display_strum_pattern():
                             downstrum_label6.config(bg="green",fg="green")
                             upstrum_label6.config(bg="green",fg="green")
 
-                            if metroStrumFlag:
+                            if metroStrumFlag and metroOnFlag:
                                 if last_strum != 5:
                                     if strums[i*6+5].strum:
                                         metro.strum('up')
@@ -507,7 +516,7 @@ def display_strum_pattern():
                     downstrum_label6.config(bg="green",fg="green")
                     upstrum_label6.config(bg="green",fg="green")
 
-                    if metroStrumFlag:
+                    if metroStrumFlag and metroOnFlag:
                         if last_strum != 5:
                             if strums[i*6+5].strum:
                                 metro.strum('up')

@@ -106,9 +106,6 @@ class metronome:
         if self.filename == None:
             print("No file specified")
             return -1
-        elif self.filename.find('.wav') == -1:
-            print("Invalid file. Needs .wav")
-            return -1
 
         win_s = 512                 # fft size
         hop_s = win_s // 2          # hop size
