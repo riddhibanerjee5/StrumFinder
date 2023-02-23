@@ -296,7 +296,10 @@ def metronome_en():
         start_metronome_button.config(text='Enabled')
 
         if metro != None:
-            metro.set_bpm(metro.calculate_bpm(soundFile))
+            if (soundFile.find(".wav") != -1):
+                metro.set_bpm(metro.calculate_bpm(soundFile))
+            else:
+                metro.set_bpm(getMidiBpm(soundFile))
 
     root.update()
     

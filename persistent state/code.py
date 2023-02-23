@@ -69,15 +69,15 @@ while (True):
         elif input.find('strum') != -1:
             # play upstrum
             if input.find("up") != -1:
-                piezo.frequency = 262
-                piezo.duty_cycle = 65535
+                piezo.frequency = 750
+                piezo.duty_cycle = 65535 // 2
                 time.sleep(beep_len)
                 piezo.duty_cycle = 0
 
                 print("Upstrum")
             # play downstrum
             elif input.find("down") != -1:
-                piezo.frequency = 440 
+                piezo.frequency = 880 
                 piezo.duty_cycle = 65535 // 2
                 time.sleep(beep_len)
                 piezo.duty_cycle = 0
