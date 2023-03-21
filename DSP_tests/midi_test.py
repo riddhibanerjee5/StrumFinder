@@ -3,6 +3,103 @@ import numpy as np
 import pretty_midi as midi
 
 
+class Chord():
+    def __init__(self, start, strum, notes):
+        self.start = start
+        self.strum = strum
+        self.notes = notes
+
+    def determineChord(self):
+        chordName = ""
+
+        if (chord.strum == False):
+            notes = chord.notes
+        else:
+            notes = np.flip(chord.notes)
+
+        # get names of notes in chord
+        names = np.array([])
+        for note in notes:
+            freq = midi.note_number_to_hz(note.pitch)
+            #chordName = chordName + convertToNote2(freq,name)
+            names = np.append(names, convertToNote2(freq,name))
+        
+        # get unique notes
+        _, indices = np.unique(names, return_index=True)
+        names = names[np.sort(indices)]
+        chordName = names[0]
+
+        # reorder note name array to begin at root note
+        start = np.where(name == names[0])[0][0]
+        tmp = np.concatenate((name[start:], name[:start]))
+
+        # get intervals
+        intervals = np.array([])
+        for i in names:
+            intervals = np.append(intervals, np.where(tmp == i)[0][0])
+        intervals = np.sort(intervals)
+
+        # determine chord
+        #diads
+        if (len(intervals)==2):
+            if (intervals[1]==1):
+                chordName = chordName + "b2 diad"
+            elif (intervals[1]==2):
+                chordName = chordName + "2 diad"
+            elif (intervals[1]==3):
+                chordName = chordName + "b3 diad"
+            elif (intervals[1]==4):
+                chordName = chordName + "3 diad"
+            elif (intervals[1]==5):
+                chordName = chordName + "4 diad"
+            elif (intervals[1]==6):
+                chordName = chordName + "b5 diad"
+            elif (intervals[1]==7):
+                chordName = chordName + "5 diad"
+            elif (intervals[1]==8):
+                chordName = chordName + "b6 diad"
+            elif (intervals[1]==9):
+                chordName = chordName + "6 diad"
+            elif (intervals[1]==10):
+                chordName = chordName + "b7 diad"
+            elif (intervals[1]==11):
+                chordName = chordName + "7 diad"
+        #triads
+        elif (len(intervals)==3):
+            if (intervals[1]==4 and intervals[2] == 7):
+                chordName = chordName + " major"
+            elif (intervals[1]==3 and intervals[2] == 7):
+                chordName = chordName + " minor"
+            elif (intervals[1]==2 and intervals[2]==7):
+                chordName = chordName + "sus2"
+            elif (intervals[1]==5 and intervals[2]==7):
+                chordName = chordName + "sus4"
+            elif (intervals[1]==3 and intervals[2]==6):
+                chordName = chordName + " dim"
+            elif (intervals[1]==4 and intervals[2]==8):
+                chordName = chordName + " aug"
+            else:
+                chordName = ""
+                for i in names:
+                    chordName += i
+        # four notes
+        elif (len(intervals)==4):
+            if (intervals[1]==4 and intervals[2] == 7 and intervals[3]==10):
+                chordName = chordName + "7 (dom7)"
+            elif (intervals[1]==3 and intervals[2] == 7 and intervals[3]==10):
+                chordName = chordName + "m7"
+            elif (intervals[1]==4 and intervals[2] == 7 and intervals[3]==11):
+                chordName = chordName + "maj7"
+            elif (intervals[1]==3 and intervals[2] == 6 and intervals[3]==9):
+                chordName = chordName + "dim7"
+            else:
+                chordName = ""
+                for i in names:
+                    chordName += i
+
+        return chordName
+
+
 def convertToNote(f, name):
     A4 = 440
     C0 = A4*pow(2, -4.75)
@@ -11,10 +108,18 @@ def convertToNote(f, name):
     n = h % 12
     return name[n] + str(octave)
 
+def convertToNote2(f, name):
+    A4 = 440
+    C0 = A4*pow(2, -4.75)
+    h = round(12*log2(f/C0))
+    n = h % 12
+    return name[n]
+
 
 name = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
+name = np.array(name)
 
-x = midi.PrettyMIDI('faster_strums.mid')
+x = midi.PrettyMIDI('pigs.mid')
 
 convert = True
 if (convert):
@@ -32,38 +137,46 @@ for instrument in x.instruments:
     indices = np.argsort([note.start for note in notes])
     notes = notes[indices]
     
-    chords = np.zeros((2,))
+    #chords = np.zeros((2,))
+    chords = np.array([])
     start = notes[0]
-    n = 100
+    start_index = 0
+    n = notes.size
     for i in range(len(notes[0:n])):
         if (notes[i].start - notes[i-1].start > 0.01 and i > 0):
-            #print()
             end = notes[i-1]
+            end_index = i-1
+
+            print("Start and end indices: ", start_index, end_index)
+            chordNotes = notes[start_index:end_index+1]
+
             chords = np.append(chords, [start,end])
             if (start.pitch < end.pitch):
+                chord = Chord(start.start,False,chordNotes)
+                chords = np.append(chords, chord)
+                chordName = chord.determineChord()
+                print(chordName)
                 print("downstrum\n")
             else:
+                chord = Chord(start.start,True,chordNotes)
+                chords = np.append(chords, chord)
+                chordName = chord.determineChord()
+                print(chordName)
                 print("upstrum\n")
+
             start = notes[i]
+            start_index = i
             
         freq = midi.note_number_to_hz(notes[i].pitch)
         print(convertToNote(freq, name), freq, notes[i])
 
     if (start.pitch < notes[notes.size-1].pitch):
         print("downstrum\n")
+        #chords = np.append(chords, Chord(start.start,False))
     else:
         print("upstrum\n")
+        #chords = np.append(chords, Chord(start.start,True))
 
-    # strum direction
+    
+    # determine chord names
     #for chord in chords:
-    #    if (chord[0].pitch < chord[1].pitch):
-    #        print("downstrum\n")
-    #    else:
-    #        print("upstrum\n")
-
-
-    #if (notes.size > 1):
-    #    if (notes[0].pitch < notes[n-1].pitch):
-    #        print("downstrum\n")
-    #    else:
-    #        print("upstrum\n")

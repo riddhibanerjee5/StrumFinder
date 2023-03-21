@@ -24,6 +24,7 @@ def generateStrums(filename):
     x = midi.PrettyMIDI(filename)
     chords = np.array([])
 
+    # combine all midi instruments?
     convert = True
     if (convert):
         combined = midi.Instrument(program=0)
