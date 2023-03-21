@@ -61,6 +61,21 @@ Riddhi
 			(7 hrs)
 - 1/27: Finalized changes from Pygame to Tkinter and remodeled the strum display animation.
 			(6 hrs)
+- 2/5: 	Modeled different GUI layouts that could be used for Beta build
+			(3 hrs)
+- 2/10:	Researched strum detection methods
+			(3 hrs)
+- 2/13: Worked on strum display algorithm and making it generic for any file inputted
+			(6 hrs)
+- 2/16:	Finalized strum display algorithm and updated GUI
+			(5 hrs)
+- 3/7:	Attempted to fix bugs when starting the program on my end
+			(3 hrs)
+- 3/18: Fixed inability to display strum pattern on my end - had to go into library file and manually change num.integrated
+		to int32
+			(3 hrs)
+- 3/21: Fixing bugs that arise from edge test cases and working on sliding strum display
+			(5 hrs)
 
 Kendall
  - 11/1 & 11/2: researched serial communication and made program in 
