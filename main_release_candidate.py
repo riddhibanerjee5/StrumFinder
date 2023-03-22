@@ -131,7 +131,8 @@ def play():
     global pauseFlag
     global metroOnFlag
     global playFlag
-    global generateStrumPressCounter
+    global displayStrumFlag
+    global slidingFlag
     
     playFlag = 1
     play_button.configure(bg="green")
@@ -139,6 +140,7 @@ def play():
     restart_button.configure(bg=["white"])
     select_file_button.configure(bg=["white"])
     root.update()
+
     if soundFile:
         songTime = mixer.music.get_pos() // 10
         if pauseFlag == 1:
@@ -161,6 +163,8 @@ def play():
         
         if displayStrumFlag:
             display_strum_pattern()
+        elif slidingFlag:
+            display_sliding_strum_pattern()
  
 
 def pause():
