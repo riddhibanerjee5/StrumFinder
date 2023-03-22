@@ -8,8 +8,9 @@ class Chord():
         self.start = start
         self.strum = strum
         self.notes = notes
+        self.chord_name = ""
 
-    def determineChord(self):
+    def determineChord(self, chord):
         chordName = ""
 
         if (chord.strum == False):
@@ -97,6 +98,7 @@ class Chord():
                 for i in names:
                     chordName += i
 
+        self.chord_name = chordName
         return chordName
 
 
@@ -137,7 +139,6 @@ for instrument in x.instruments:
     indices = np.argsort([note.start for note in notes])
     notes = notes[indices]
     
-    #chords = np.zeros((2,))
     chords = np.array([])
     start = notes[0]
     start_index = 0
@@ -150,17 +151,16 @@ for instrument in x.instruments:
             print("Start and end indices: ", start_index, end_index)
             chordNotes = notes[start_index:end_index+1]
 
-            chords = np.append(chords, [start,end])
             if (start.pitch < end.pitch):
                 chord = Chord(start.start,False,chordNotes)
                 chords = np.append(chords, chord)
-                chordName = chord.determineChord()
+                chordName = chord.determineChord(chord)
                 print(chordName)
                 print("downstrum\n")
             else:
                 chord = Chord(start.start,True,chordNotes)
                 chords = np.append(chords, chord)
-                chordName = chord.determineChord()
+                chordName = chord.determineChord(chord)
                 print(chordName)
                 print("upstrum\n")
 
@@ -170,13 +170,16 @@ for instrument in x.instruments:
         freq = midi.note_number_to_hz(notes[i].pitch)
         print(convertToNote(freq, name), freq, notes[i])
 
+    chordNotes = notes[start_index:n]
     if (start.pitch < notes[notes.size-1].pitch):
+        chord = Chord(start.start,False,chordNotes)
+        chords = np.append(chords, chord)
+        chord.determineChord(chord)
+        print(chordName)
         print("downstrum\n")
-        #chords = np.append(chords, Chord(start.start,False))
     else:
+        chord = Chord(start.start,True,chordNotes)
+        chords = np.append(chords, chord)
+        chord.determineChord(chord)
+        print(chordName)
         print("upstrum\n")
-        #chords = np.append(chords, Chord(start.start,True))
-
-    
-    # determine chord names
-    #for chord in chords:

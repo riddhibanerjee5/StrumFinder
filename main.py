@@ -324,7 +324,9 @@ def display_strum_pattern():
     #print(soundFile)
     #print(metroStrumFlag)
     if soundFile:
-        strums = generateStrums(soundFile)
+
+        combineAllInstruments = True
+        strums = generateStrums(soundFile, combineAllInstruments)
         
         iter = len(strums) // 6
         

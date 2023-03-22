@@ -254,7 +254,9 @@ def display_strum_pattern():
         if soundFile:
             generateStrumPressCounter+=1        # used for tracking play/pause functionality
             global strums
-            strums = generateStrums(soundFile)
+            # combine all instruments on midi file?
+            combineAllInstruments = True
+            strums = generateStrums(soundFile, combineAllInstruments)
             
             global iter
             iter = len(strums) // 6
