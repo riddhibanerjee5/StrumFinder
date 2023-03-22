@@ -505,8 +505,7 @@ def display_sliding_strum_pattern():
                 upstrum_labels[1].place(x=xaxis+750,y=450)
                 downstrum_labels[2].place(x=xaxis+1000,y=450)
                 upstrum_labels[2].place(x=xaxis+1250,y=450)
-
-                print(downstrum_labels[0].winfo_x())
+                
                 if downstrum_labels[0].winfo_x() == 60:
                     show_downstrum = False
 
