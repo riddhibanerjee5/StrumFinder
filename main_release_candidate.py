@@ -491,30 +491,38 @@ def display_sliding_strum_pattern():
         downstrum_labels[5].place(x=6000,y=450)
         root.update()
     
-    if soundFile: 
-        show_downstrum = True
-        while(slidingFlag and displayStrumFlag == 0):
-            xaxis = 1550
+    if soundFile:         
+        combineAllInstruments = True
+        strums = generateStrums(soundFile, combineAllInstruments)
             
-            while xaxis > -150:
-                if show_downstrum:
-                    downstrum_labels[0].place(x=xaxis,y=450)
-                else:
-                    downstrum_labels[0].place(x=150, y=600)
-
-                downstrum_labels[1].place(x=xaxis+250,y=450)
-                upstrum_labels[0].place(x=xaxis+500,y=450)
-                upstrum_labels[1].place(x=xaxis+750,y=450)
-                downstrum_labels[2].place(x=xaxis+1000,y=450)
-                upstrum_labels[2].place(x=xaxis+1250,y=450)
+        iter2 = len(strums) // 6
+        strum_labels = list()
+            
+        for i in range(0,iter2):
+            if(strums[i].strum == False):
+                strum_labels.append(Label(image=downstrum,height=100,width=100))
+                strum_labels[i].image = downstrum
+            else:
+                strum_labels.append(Label(image=upstrum,height=100,width=100))
+                strum_labels[i].image = upstrum
+        
+        space = 0
+        for j in range(len(strum_labels)):
+            strum_labels[j].place(x=1550+space,y=450)
+            space += 250
+            root.update()
                 
-                if downstrum_labels[0].winfo_x() == 60:
-                    show_downstrum = False
-
+        while(slidingFlag and displayStrumFlag == 0):
+            j = 0
+            xaxis=-10
+            while(strum_labels[len(strum_labels)-1].winfo_x() != -150 and j < len(strum_labels)):
+                #print("j: ", j)
+                labelPos = strum_labels[j].winfo_x()
+                #print("Label Position: ", labelPos)
+                strum_labels[j].place(x=labelPos+xaxis,y=450)
                 root.update()
+                j+=1
 
-                time.sleep(0.00000005)            
-                xaxis-=1
                 if(slidingFlag == 0):
                         upstrum_labels[0].place(x=6000,y=450)
                         downstrum_labels[0].place(x=6000,y=450)
