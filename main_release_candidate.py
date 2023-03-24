@@ -1,4 +1,5 @@
 import time
+import pygame
 from metronome import metronome
 from playsound import playsound
 from os import startfile
@@ -11,6 +12,7 @@ from midi_strums import generateStrums, getMidiBpm
 #from stft_chirp import show_graph
 #from stft import generateNotes
 mixer.init()
+pygame.init()
 
 colors = {"turqoise": "#55D6BE",
           "magicMint": "#ACFCD9",
@@ -48,6 +50,14 @@ slidingFlag = 0
 displayStrumFlag = 0
 generateStrumPressCounter = 0
 strum_labels = None
+start_display_strum = None
+screen_width = root.winfo_screenwidth()
+strum_pixel_hit = 400
+fps = 15
+spf = 1 / fps
+time_across_screen = 0
+start_display_strum = list()
+            
 
 global isSlidingDisplayPressed
 isSlidingDisplayPressed = 0
@@ -104,7 +114,11 @@ strum3 = [15,15,15,1,1,1] # up, up, up, down, down, down
 def openFile():
     global strum_labels
     global strums
-    strum_labels = list()
+    global time_across_screen
+    global start_display_strum
+    global strum_pixel_hit
+
+    strum_labels = list(list())
     select_file_button.configure(bg="green")
     play_button.configure(bg=["white"])
     stop_button.configure(bg=["white"])
@@ -121,16 +135,25 @@ def openFile():
     
     strums = generateStrums(soundFile, True)
     iter2 = len(strums)//6
+
+    time_across_screen = 0
     
-    for i in range(0,iter2):
+    for i in range(0,len(strums)):
         if(strums[i].strum == False):
             strum_labels.append(Label(image=downstrum,height=100,width=100))
             strum_labels[i].image = downstrum
             strum_labels[i].config(bg="white", fg="white")
+            start_display_strum.append(int((strums[i].start - 1) * 1000 // 10))
+            #print(strums[i].start)
+            #print(strums[i].start - time_across_screen)
+   
         else:
             strum_labels.append(Label(image=upstrum,height=100,width=100))
             strum_labels[i].image = upstrum
             strum_labels[i].config(bg="white", fg="white")
+            start_display_strum.append(int((strums[i].start - time_across_screen) * 1000 // 10))
+
+    
 
 
 def play():
@@ -213,10 +236,6 @@ def restart():
         metro.pause()
 
     playFlag = 0
-
-# def openNotes():
-#     generateNotes(soundFile)
-#     startfile("notes.txt")
 
 def serial():
     global metroOnFlag
@@ -501,12 +520,16 @@ def display_sliding_strum_pattern():
     global displayStrumFlag
     global root
     global isSlidingDisplayPressed
-    slidingFlag = 1
-    displayStrumFlag = 0
     global strums
     global strum_labels
+    global strumHitTriangle
+    global time_across_screen
     
     isSlidingDisplayPressed+=1
+    slidingFlag = 1
+    displayStrumFlag = 0
+
+    clock = pygame.time.Clock()
     
     if(slidingFlag == 1 and displayStrumFlag == 0):
         upstrum_labels[0].place(x=6000,y=450)
@@ -524,32 +547,8 @@ def display_sliding_strum_pattern():
         root.update()
     
     if soundFile:
-        global strumHitTriangle
-        # strumHitTriangle = Label(image=triangle)
-        # strumHitTriangle.image = triangle
         strumHitTriangle.place(x=410,y=375)
-        
-              
-        combineAllInstruments = True
-        #strums = generateStrums(soundFile, combineAllInstruments)
-        screen_width = root.winfo_screenwidth()
-        strum_pixel_hit = 400
-        
-        #iter2 = len(strums) // 6
-        #strum_labels = list()
-        bpm = getMidiBpm(soundFile)
-        seconds_per_frame = 1 / 60
-        seconds_per_beat = 1 / (bpm / 60)
-        seconds_per_beat_for_screen = seconds_per_beat * seconds_per_frame
-        note_speed = -((screen_width - strum_pixel_hit) * seconds_per_beat_for_screen)
-        print(note_speed)
 
-        #strum_times = list()
-#
-        #if strums[0].delta - seconds_per_beat > 0:
-        #    pixels = -note_speed
-#
-        #strum_times.append(strums.delta)
         print("Counter: ", isSlidingDisplayPressed)
         if(isSlidingDisplayPressed > 1):
             for j in range(len(strum_labels)):
@@ -557,27 +556,54 @@ def display_sliding_strum_pattern():
                 strum_labels[j].config(bg="white",fg="white")
                 
         root.update()
+        print(int(spf*1000))
+        while mixer.music.get_pos() != -1 and mixer.music.get_pos() < strums[len(strums)-1].start * 1000 + 1:
+            sliding_animation()
+            clock.tick(30)
         
-        space = 0
-        for j in range(len(strum_labels)):
-            strum_labels[j].place(x=1550+space,y=450)
-            space += 250
-            root.update()
-                
-        while(slidingFlag and displayStrumFlag == 0):
-            j = 0
-            xaxis=note_speed
-            while(strum_labels[len(strum_labels)-1].winfo_x() != -150 and j < len(strum_labels)):
-                labelPos = strum_labels[j].winfo_x()
-                if labelPos <= strum_pixel_hit:
-                    strum_labels[j].config(bg="green",fg="green")
-                
-                strum_labels[j].place(x=labelPos+xaxis,y=450)
-                root.update()
-                j+=1
+        
 
-                if(slidingFlag == 0):
-                    break
+def sliding_animation():
+    global strum_labels
+    global start_display_strum
+    global slidingFlag 
+    global displayStrumFlag
+    global note_speed
+    global strum_pixel_hit
+
+    window_width = root.winfo_screenwidth()
+    music_time = mixer.music.get_pos() // 10
+
+    for i in range(len(start_display_strum)):
+        if music_time >= start_display_strum[i]:
+            x_pixel = int(window_width - ((music_time - start_display_strum[i]) * 5))
+            strum_labels[i].place(x=x_pixel,y=450)
+            if x_pixel <= strum_pixel_hit:
+                strum_labels[i].config(bg="green",fg="green")
+        else:
+            break
+
+    root.update()
+
+    #space = 0
+    #for j in range(len(strum_labels)):
+    #    strum_labels[j].place(x=1550+space,y=450)
+    #    space += 250
+    #    root.update()
+    #        
+    #while(slidingFlag and displayStrumFlag == 0):
+    #    j = 0
+    #    xaxis=note_speed
+    #    while(strum_labels[len(strum_labels)-1].winfo_x() != -150 and j < len(strum_labels)):
+    #        labelPos = strum_labels[j].winfo_x()
+    #        if labelPos <= strum_pixel_hit:
+    #            strum_labels[j].config(bg="green",fg="green")
+    #        
+    #        strum_labels[j].place(x=labelPos+xaxis,y=450)
+    #        root.update()
+    #        j+=1
+    #        if(slidingFlag == 0):
+    #            break
 
 
 #################################################################################################################################
