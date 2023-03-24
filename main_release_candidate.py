@@ -47,6 +47,11 @@ soundFile = None
 slidingFlag = 0
 displayStrumFlag = 0
 generateStrumPressCounter = 0
+strum_labels = None
+
+global isSlidingDisplayPressed
+isSlidingDisplayPressed = 0
+
 
 
 ################################################ Images ##########################################################################
@@ -66,7 +71,12 @@ select_file_image = ImageTk.PhotoImage(Image.open("./images/select_file.png"))
 play_button_image = ImageTk.PhotoImage(Image.open("./images/play-green.png").resize((75,75)))
 pause_button_image = ImageTk.PhotoImage(Image.open("./images/pause-green.png").resize((75,75)))
 restart_button_image = ImageTk.PhotoImage(Image.open("./images/restart_green.png").resize((75,75)))
+triangle = ImageTk.PhotoImage(Image.open("./images/triangle.png"))
 
+global strumHitTriangle
+strumHitTriangle = Label(image=triangle)
+strumHitTriangle.image = triangle
+strumHitTriangle.config(bg="white")
 
 downstrum_labels = list()
 upstrum_labels = list()
@@ -92,6 +102,9 @@ strum3 = [15,15,15,1,1,1] # up, up, up, down, down, down
 ################################################# FUNCTIONS ######################################################################
 
 def openFile():
+    global strum_labels
+    global strums
+    strum_labels = list()
     select_file_button.configure(bg="green")
     play_button.configure(bg=["white"])
     stop_button.configure(bg=["white"])
@@ -105,6 +118,19 @@ def openFile():
                                                       "*.mid*",),("wav files", "*.wav")
                                                       ))
     playSound = mixer.music.load(soundFile)
+    
+    strums = generateStrums(soundFile, True)
+    iter2 = len(strums)//6
+    
+    for i in range(0,iter2):
+        if(strums[i].strum == False):
+            strum_labels.append(Label(image=downstrum,height=100,width=100))
+            strum_labels[i].image = downstrum
+            strum_labels[i].config(bg="white", fg="white")
+        else:
+            strum_labels.append(Label(image=upstrum,height=100,width=100))
+            strum_labels[i].image = upstrum
+            strum_labels[i].config(bg="white", fg="white")
 
 
 def play():
@@ -242,6 +268,9 @@ def display_strum_pattern():
     global displayStrumFlag
     global slidingFlag
     global generateStrumPressCounter
+    global strumHitTriangle
+    global strums
+    global strum_labels   
     
     displayStrumFlag = 1
     slidingFlag = 0
@@ -253,10 +282,14 @@ def display_strum_pattern():
         #print("In main block")
         if soundFile:
             generateStrumPressCounter+=1        # used for tracking play/pause functionality
-            global strums
+            #global strums
             # combine all instruments on midi file?
-            combineAllInstruments = True
-            strums = generateStrums(soundFile, combineAllInstruments)
+            #combineAllInstruments = True
+            #strums = generateStrums(soundFile, combineAllInstruments)
+            strumHitTriangle.place(x=-1500,y=400)
+            for j in range(len(strum_labels)):
+                strum_labels[j].place(x=1550,y=2000)
+                strum_labels[j].config(bg="white",fg="white")
             
             global iter
             iter = len(strums) // 6
@@ -265,21 +298,14 @@ def display_strum_pattern():
             last_strum = -1
             music_time = mixer.music.get_pos() // 10
             for i in range(0,iter):
-                #print('i: ', i)
-                #print('strums[', i*6 + 0, ']: ', strums[i*6 + 0].strum, ', time: ', strums[i + 0].start)
-                #print('strums[', i*6 + 1, ']: ', strums[i*6 + 1].strum, ', time: ', strums[i + 1].start)
-                #print('strums[', i*6 + 2, ']: ', strums[i*6 + 2].strum, ', time: ', strums[i + 2].start)
-                #print('strums[', i*6 + 3, ']: ', strums[i*6 + 3].strum, ', time: ', strums[i + 3].start)
-                #print('strums[', i*6 + 4, ']: ', strums[i*6 + 4].strum, ', time: ', strums[i + 4].start)
-                #print('strums[', i*6 + 5, ']: ', strums[i*6 + 5].strum, ', time: ', strums[i + 5].start)
-
+                print("Test 1")
                 if(strums[i*6].strum == False):
-                    #print('down')
+                    print('down')
                     downstrum_labels[0].place(x=100,y=450)
                     upstrum_labels[0].place(x=6000,y=450)
                     #root.update()
                 else:
-                    #print('up')
+                    print('up')
                     upstrum_labels[0].place(x=100,y=450)
                     downstrum_labels[0].place(x=6000,y=450)
                     #root.update()
@@ -474,8 +500,13 @@ def display_sliding_strum_pattern():
     global slidingFlag
     global displayStrumFlag
     global root
+    global isSlidingDisplayPressed
     slidingFlag = 1
     displayStrumFlag = 0
+    global strums
+    global strum_labels
+    
+    isSlidingDisplayPressed+=1
     
     if(slidingFlag == 1 and displayStrumFlag == 0):
         upstrum_labels[0].place(x=6000,y=450)
@@ -492,14 +523,20 @@ def display_sliding_strum_pattern():
         downstrum_labels[5].place(x=6000,y=450)
         root.update()
     
-    if soundFile:         
-        combineAllInstruments = True
-        strums = generateStrums(soundFile, combineAllInstruments)
-        screen_width = root.winfo_screenwidth()
-        strum_pixel_hit = 600
+    if soundFile:
+        global strumHitTriangle
+        # strumHitTriangle = Label(image=triangle)
+        # strumHitTriangle.image = triangle
+        strumHitTriangle.place(x=410,y=375)
         
-        iter2 = len(strums) // 6
-        strum_labels = list()
+              
+        combineAllInstruments = True
+        #strums = generateStrums(soundFile, combineAllInstruments)
+        screen_width = root.winfo_screenwidth()
+        strum_pixel_hit = 400
+        
+        #iter2 = len(strums) // 6
+        #strum_labels = list()
         bpm = getMidiBpm(soundFile)
         seconds_per_frame = 1 / 60
         seconds_per_beat = 1 / (bpm / 60)
@@ -513,14 +550,13 @@ def display_sliding_strum_pattern():
         #    pixels = -note_speed
 #
         #strum_times.append(strums.delta)
-    
-        for i in range(0,iter2):
-            if(strums[i].strum == False):
-                strum_labels.append(Label(image=downstrum,height=100,width=100))
-                strum_labels[i].image = downstrum
-            else:
-                strum_labels.append(Label(image=upstrum,height=100,width=100))
-                strum_labels[i].image = upstrum
+        print("Counter: ", isSlidingDisplayPressed)
+        if(isSlidingDisplayPressed > 1):
+            for j in range(len(strum_labels)):
+                strum_labels[j].place(x=1550,y=2000)
+                strum_labels[j].config(bg="white",fg="white")
+                
+        root.update()
         
         space = 0
         for j in range(len(strum_labels)):
@@ -532,9 +568,7 @@ def display_sliding_strum_pattern():
             j = 0
             xaxis=note_speed
             while(strum_labels[len(strum_labels)-1].winfo_x() != -150 and j < len(strum_labels)):
-                #print("j: ", j)
                 labelPos = strum_labels[j].winfo_x()
-                #print("Label Position: ", labelPos)
                 if labelPos <= strum_pixel_hit:
                     strum_labels[j].config(bg="green",fg="green")
                 
@@ -543,26 +577,7 @@ def display_sliding_strum_pattern():
                 j+=1
 
                 if(slidingFlag == 0):
-                    upstrum_labels[0].place(x=6000,y=450)
-                    downstrum_labels[0].place(x=6000,y=450)
-                    upstrum_labels[1].place(x=6000,y=450)
-                    downstrum_labels[1].place(x=6000,y=450)
-                    upstrum_labels[2].place(x=6000,y=450)
-                    downstrum_labels[2].place(x=6000,y=450)
-                    upstrum_labels[3].place(x=6000,y=450)
-                    downstrum_labels[3].place(x=6000,y=450)
-                    upstrum_labels[4].place(x=6000,y=450)
-                    downstrum_labels[4].place(x=6000,y=450)
-                    upstrum_labels[5].place(x=6000,y=450)
-                    downstrum_labels[5].place(x=6000,y=450)
-                    root.update()
                     break
-                
-    
-    
-    
-def play_strums():
-    test = 1
 
 
 #################################################################################################################################
