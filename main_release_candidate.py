@@ -473,6 +473,7 @@ def display_strum_pattern():
 def display_sliding_strum_pattern():
     global slidingFlag
     global displayStrumFlag
+    global root
     slidingFlag = 1
     displayStrumFlag = 0
     
@@ -494,10 +495,25 @@ def display_sliding_strum_pattern():
     if soundFile:         
         combineAllInstruments = True
         strums = generateStrums(soundFile, combineAllInstruments)
-            
+        screen_width = root.winfo_screenwidth()
+        strum_pixel_hit = 600
+        
         iter2 = len(strums) // 6
         strum_labels = list()
-            
+        bpm = getMidiBpm(soundFile)
+        seconds_per_frame = 1 / 60
+        seconds_per_beat = 1 / (bpm / 60)
+        seconds_per_beat_for_screen = seconds_per_beat * seconds_per_frame
+        note_speed = -((screen_width - strum_pixel_hit) * seconds_per_beat_for_screen)
+        print(note_speed)
+
+        #strum_times = list()
+#
+        #if strums[0].delta - seconds_per_beat > 0:
+        #    pixels = -note_speed
+#
+        #strum_times.append(strums.delta)
+    
         for i in range(0,iter2):
             if(strums[i].strum == False):
                 strum_labels.append(Label(image=downstrum,height=100,width=100))
@@ -514,30 +530,35 @@ def display_sliding_strum_pattern():
                 
         while(slidingFlag and displayStrumFlag == 0):
             j = 0
-            xaxis=-10
+            xaxis=note_speed
             while(strum_labels[len(strum_labels)-1].winfo_x() != -150 and j < len(strum_labels)):
                 #print("j: ", j)
                 labelPos = strum_labels[j].winfo_x()
                 #print("Label Position: ", labelPos)
+                if labelPos <= strum_pixel_hit:
+                    strum_labels[j].config(bg="green",fg="green")
+                
                 strum_labels[j].place(x=labelPos+xaxis,y=450)
                 root.update()
                 j+=1
 
                 if(slidingFlag == 0):
-                        upstrum_labels[0].place(x=6000,y=450)
-                        downstrum_labels[0].place(x=6000,y=450)
-                        upstrum_labels[1].place(x=6000,y=450)
-                        downstrum_labels[1].place(x=6000,y=450)
-                        upstrum_labels[2].place(x=6000,y=450)
-                        downstrum_labels[2].place(x=6000,y=450)
-                        upstrum_labels[3].place(x=6000,y=450)
-                        downstrum_labels[3].place(x=6000,y=450)
-                        upstrum_labels[4].place(x=6000,y=450)
-                        downstrum_labels[4].place(x=6000,y=450)
-                        upstrum_labels[5].place(x=6000,y=450)
-                        downstrum_labels[5].place(x=6000,y=450)
-                        root.update()
-                        break
+                    upstrum_labels[0].place(x=6000,y=450)
+                    downstrum_labels[0].place(x=6000,y=450)
+                    upstrum_labels[1].place(x=6000,y=450)
+                    downstrum_labels[1].place(x=6000,y=450)
+                    upstrum_labels[2].place(x=6000,y=450)
+                    downstrum_labels[2].place(x=6000,y=450)
+                    upstrum_labels[3].place(x=6000,y=450)
+                    downstrum_labels[3].place(x=6000,y=450)
+                    upstrum_labels[4].place(x=6000,y=450)
+                    downstrum_labels[4].place(x=6000,y=450)
+                    upstrum_labels[5].place(x=6000,y=450)
+                    downstrum_labels[5].place(x=6000,y=450)
+                    root.update()
+                    break
+                
+    
     
     
 def play_strums():
