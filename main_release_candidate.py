@@ -136,14 +136,14 @@ def openFile():
     strums = generateStrums(soundFile, True)
     iter2 = len(strums)//6
 
-    time_across_screen = 0
+    delay = 3
     
     for i in range(0,len(strums)):
         if(strums[i].strum == False):
             strum_labels.append(Label(image=downstrum,height=100,width=100))
             strum_labels[i].image = downstrum
             strum_labels[i].config(bg="white", fg="white")
-            start_display_strum.append(int((strums[i].start - 1) * 1000 // 10))
+            start_display_strum.append(int((strums[i].start - delay) * 1000 // 10))
             #print(strums[i].start)
             #print(strums[i].start - time_across_screen)
    
@@ -151,7 +151,7 @@ def openFile():
             strum_labels.append(Label(image=upstrum,height=100,width=100))
             strum_labels[i].image = upstrum
             strum_labels[i].config(bg="white", fg="white")
-            start_display_strum.append(int((strums[i].start - time_across_screen) * 1000 // 10))
+            start_display_strum.append(int((strums[i].start - delay) * 1000 // 10))
 
     
 
@@ -559,7 +559,8 @@ def display_sliding_strum_pattern():
         print(int(spf*1000))
         while mixer.music.get_pos() != -1 and mixer.music.get_pos() < strums[len(strums)-1].start * 1000 + 1:
             sliding_animation()
-            clock.tick(30)
+            clock.tick(60)
+            print(clock.get_fps())
         
         
 
@@ -568,20 +569,19 @@ def sliding_animation():
     global start_display_strum
     global slidingFlag 
     global displayStrumFlag
-    global note_speed
     global strum_pixel_hit
+    global strums
 
     window_width = root.winfo_screenwidth()
     music_time = mixer.music.get_pos() // 10
-
     for i in range(len(start_display_strum)):
-        if music_time >= start_display_strum[i]:
-            x_pixel = int(window_width - ((music_time - start_display_strum[i]) * 5))
+        if music_time >= start_display_strum[i] and music_time - start_display_strum[i] < 460:
+            #print("music time: ", music_time, ", strums time: ", start_display_strum[i], ", pixel: ", (window_width - ((music_time - start_display_strum[i]) * 5), ", window: ", window_width))
+            x_pixel = int(window_width - ((music_time - start_display_strum[i]) * 4))
+
             strum_labels[i].place(x=x_pixel,y=450)
             if x_pixel <= strum_pixel_hit:
                 strum_labels[i].config(bg="green",fg="green")
-        else:
-            break
 
     root.update()
 
