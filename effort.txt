@@ -141,4 +141,9 @@ Kendall
  - 2/16: Create the strumming pattern algorithm for the GUI and updated
 		 the GUI for the metronome (5 hrs)
  - 2/17: Last minute touches on the GUI (2 hrs)
-         
+ - 2/20: Bug fixes for metronome and GUI (5 hrs)
+ - 2/23: Bug fixes for the GUI (2 hrs)
+ - 3/20: Speaker debugging (3 hrs)
+ - 3/21: Sliding display ideating and implementing preliminary sliding display (5 hrs)
+ - 3/24: Thinking of math and implementing for pixels for sliding display (2 hrs)
+ - 3/25: Implementing animation for sliding display that has variable notes (8 hrs)
