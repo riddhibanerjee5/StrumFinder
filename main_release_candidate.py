@@ -57,9 +57,6 @@ fps = 15
 spf = 1 / fps
 time_across_screen = 0
 start_display_strum = list()
-            
-
-global isSlidingDisplayPressed
 isSlidingDisplayPressed = 0
 
 
@@ -83,7 +80,6 @@ pause_button_image = ImageTk.PhotoImage(Image.open("./images/pause-green.png").r
 restart_button_image = ImageTk.PhotoImage(Image.open("./images/restart_green.png").resize((75,75)))
 triangle = ImageTk.PhotoImage(Image.open("./images/triangle.png"))
 
-global strumHitTriangle
 strumHitTriangle = Label(image=triangle)
 strumHitTriangle.image = triangle
 strumHitTriangle.config(bg="white")
@@ -97,14 +93,6 @@ for i in range(10):
     upstrum_labels.append(Label(image=upstrum,height=100,width=100))
     upstrum_labels[i].image = upstrum
 
-    
-##################################################################################################################################
-
-################################################# TEST VARIABLES #################################################################
-
-strum1 = [8,8,12,5,20,20] # down, down, up, down, up, up
-strum2 = [2,2,2,2,2,11]   # down, down, down, down, down, up
-strum3 = [15,15,15,1,1,1] # up, up, up, down, down, down
 
 ##################################################################################################################################
 
@@ -138,6 +126,10 @@ def openFile():
 
     delay = 3
     
+    if len(strum_labels) != 0:
+        for strum in strum_labels:
+            strum.place(x=6000,y=450)
+
     for i in range(0,len(strums)):
         if(strums[i].strum == False):
             strum_labels.append(Label(image=downstrum,height=100,width=100))
@@ -228,6 +220,9 @@ def restart():
     select_file_button.configure(bg=colors["white"])
     root.update()
 
+    for strum in strum_labels:
+        strum.place(x=6000,y=450)
+
     if soundFile:
         mixer.music.stop()
         pauseFlag = 0
@@ -293,9 +288,7 @@ def display_strum_pattern():
     
     displayStrumFlag = 1
     slidingFlag = 0
-    #print("Hi")
-    #print(soundFile)
-    #print(metroStrumFlag)
+
     #print("displayStrumFlag before: ", displayStrumFlag, " slidingFlag before: ", slidingFlag)
     if(displayStrumFlag == 1 and slidingFlag == 0):
         #print("In main block")
@@ -310,96 +303,100 @@ def display_strum_pattern():
                 strum_labels[j].place(x=1550,y=2000)
                 strum_labels[j].config(bg="white",fg="white")
             
-            global iter
             iter = len(strums) // 6
             
             #print("Iter: ", iter)
             last_strum = -1
             music_time = mixer.music.get_pos() // 10
+
             for i in range(0,iter):
-                print("Test 1")
-                if(strums[i*6].strum == False):
-                    print('down')
-                    downstrum_labels[0].place(x=100,y=450)
-                    upstrum_labels[0].place(x=6000,y=450)
-                    #root.update()
-                else:
-                    print('up')
-                    upstrum_labels[0].place(x=100,y=450)
-                    downstrum_labels[0].place(x=6000,y=450)
-                    #root.update()
-                
-                if(strums[i*6+1].strum):
-                    #print('up')
-                    upstrum_labels[1].place(x=350,y=450)
-                    downstrum_labels[1].place(x=6500,y=450)
-                    #root.update()
-                else:
-                    #print('down')
-                    downstrum_labels[1].place(x=350,y=450)
-                    upstrum_labels[1].place(x=6500,y=450)
-                    #root.update()
-                
-                    
-                if(strums[i*6+2].strum == False):
-                    #print('down')
-                    downstrum_labels[2].place(x=600,y=450)
-                    upstrum_labels[2].place(x=6000,y=450)
-                    #root.update()
-                else:
-                    #print('up')
-                    upstrum_labels[2].place(x=600,y=450)
-                    downstrum_labels[2].place(x=6000,y=450)
-                    #root.update()
-                    
-                if(strums[i*6+3].strum == False):
-                    #print('down')
-                    downstrum_labels[3].place(x=850,y=450)
-                    upstrum_labels[3].place(x=8500,y=450)
-                    #root.update()
-                else:
-                    #print('up')
-                    upstrum_labels[3].place(x=850,y=450)
-                    downstrum_labels[3].place(x=8500,y=450)
-                    #root.update()
-                    
-                if(strums[i*6+4].strum == False):
-                    #print('down')
-                    downstrum_labels[4].place(x=1100,y=450)
-                    upstrum_labels[4].place(x=11000,y=450)
-                    #root.update()
-                else:
-                    #print('up')
-                    upstrum_labels[4].place(x=1100,y=450)
-                    downstrum_labels[4].place(x=11000,y=450)
-                    #root.update()
-                    
-                if(strums[i*6+5].strum == False):
-                    #print('down')
-                    downstrum_labels[5].place(x=1350,y=450)
-                    upstrum_labels[5].place(x=13500,y=450)
-                    #root.update()
-                else:
-                    #print('up')
-                    upstrum_labels[5].place(x=1350,y=450)
-                    downstrum_labels[5].place(x=13500,y=450)
-                    #root.update()
+                strum_labels[i*6+0].place(x=100,y=450)
+                strum_labels[i*6+1].place(x=350,y=450)
+                strum_labels[i*6+2].place(x=600,y=450)
+                strum_labels[i*6+3].place(x=850,y=450)
+                strum_labels[i*6+4].place(x=1100,y=450)
+                strum_labels[i*6+5].place(x=1350,y=450)
+
+                #if(strums[i*6].strum == False):
+                #    downstrum_labels[0].place(x=100,y=450)
+                #    upstrum_labels[0].place(x=6000,y=450)
+                #else:
+                #    print('up')
+                #    upstrum_labels[0].place(x=100,y=450)
+                #    downstrum_labels[0].place(x=6000,y=450)
+                #
+                #if(strums[i*6+1].strum):
+                #    upstrum_labels[1].place(x=350,y=450)
+                #    downstrum_labels[1].place(x=6500,y=450)
+                #else:
+                #    downstrum_labels[1].place(x=350,y=450)
+                #    upstrum_labels[1].place(x=6500,y=450)
+                #    #root.update()
+                #
+                #    
+                #if(strums[i*6+2].strum == False):
+                #    #print('down')
+                #    downstrum_labels[2].place(x=600,y=450)
+                #    upstrum_labels[2].place(x=6000,y=450)
+                #    #root.update()
+                #else:
+                #    #print('up')
+                #    upstrum_labels[2].place(x=600,y=450)
+                #    downstrum_labels[2].place(x=6000,y=450)
+                #    #root.update()
+                #    
+                #if(strums[i*6+3].strum == False):
+                #    #print('down')
+                #    downstrum_labels[3].place(x=850,y=450)
+                #    upstrum_labels[3].place(x=8500,y=450)
+                #    #root.update()
+                #else:
+                #    #print('up')
+                #    upstrum_labels[3].place(x=850,y=450)
+                #    downstrum_labels[3].place(x=8500,y=450)
+                #    #root.update()
+                #    
+                #if(strums[i*6+4].strum == False):
+                #    #print('down')
+                #    downstrum_labels[4].place(x=1100,y=450)
+                #    upstrum_labels[4].place(x=11000,y=450)
+                #    #root.update()
+                #else:
+                #    #print('up')
+                #    upstrum_labels[4].place(x=1100,y=450)
+                #    downstrum_labels[4].place(x=11000,y=450)
+                #    #root.update()
+                #    
+                #if(strums[i*6+5].strum == False):
+                #    #print('down')
+                #    downstrum_labels[5].place(x=1350,y=450)
+                #    upstrum_labels[5].place(x=13500,y=450)
+                #    #root.update()
+                #else:
+                #    #print('up')
+                #    upstrum_labels[5].place(x=1350,y=450)
+                #    downstrum_labels[5].place(x=13500,y=450)
+                #    #root.update()
                     
                 root.update()
                     
                 #print('playFlag: ', playFlag, ', music time: ', music_time, ', strums[5]: ', strums[i*6+5].start)
-                while(playFlag and music_time <= strums[i*6+5].start and displayStrumFlag == 1):
+                while(playFlag and music_time < (strums[i*6+6].start * 1000 // 10) and displayStrumFlag == 1):
                     music_time = mixer.music.get_pos() // 10
 
                     for j in range(0, 5):
-                        if music_time < strums[i*6+j+1].start and music_time >= strums[i*6+j].start:
+                        if music_time < (strums[i*6+j+1].start * 1000 // 10) and music_time >= (strums[i*6+j].start * 1000 // 10):
                             #print(j)
                             if j == 0:
-                                downstrum_labels[5].config(bg="white",fg="white")
-                                upstrum_labels[5].config(bg="white",fg="white")
+                                strum_labels[i*6+5].config(bg="white",fg="white")
+                                strum_labels[i*6+0].config(bg="green",fg="green")
 
-                                downstrum_labels[0].config(bg="green",fg="green")
-                                upstrum_labels[0].config(bg="green",fg="green")
+                                
+                                #downstrum_labels[5].config(bg="white",fg="white")
+                                #upstrum_labels[5].config(bg="white",fg="white")
+#
+                                #downstrum_labels[0].config(bg="green",fg="green")
+                                #upstrum_labels[0].config(bg="green",fg="green")
 
                                 if metroOnFlag and metroStrumFlag:
                                     if last_strum != 0:
@@ -411,11 +408,14 @@ def display_strum_pattern():
                                     last_strum = 0
 
                             elif j == 1:
-                                downstrum_labels[0].config(bg="white",fg="white")
-                                upstrum_labels[0].config(bg="white",fg="white")
+                                #downstrum_labels[0].config(bg="white",fg="white")
+                                #upstrum_labels[0].config(bg="white",fg="white")
+#
+                                #downstrum_labels[1].config(bg="green",fg="green")
+                                #upstrum_labels[1].config(bg="green",fg="green")
 
-                                downstrum_labels[1].config(bg="green",fg="green")
-                                upstrum_labels[1].config(bg="green",fg="green")
+                                strum_labels[i*6+0].config(bg="white",fg="white")
+                                strum_labels[i*6+1].config(bg="green",fg="green")
 
                                 if metroStrumFlag and metroOnFlag:
                                     if last_strum != 1:
@@ -427,11 +427,14 @@ def display_strum_pattern():
                                     last_strum = 1
 
                             elif j == 2:
-                                downstrum_labels[1].config(bg="white",fg="white")
-                                upstrum_labels[1].config(bg="white",fg="white")
+                                #downstrum_labels[1].config(bg="white",fg="white")
+                                #upstrum_labels[1].config(bg="white",fg="white")
+#
+                                #downstrum_labels[2].config(bg="green",fg="green")
+                                #upstrum_labels[2].config(bg="green",fg="green")
 
-                                downstrum_labels[2].config(bg="green",fg="green")
-                                upstrum_labels[2].config(bg="green",fg="green")
+                                strum_labels[i*6+1].config(bg="white",fg="white")
+                                strum_labels[i*6+2].config(bg="green",fg="green")
 
                                 if metroStrumFlag and metroOnFlag:
                                     if last_strum != 2:
@@ -443,11 +446,14 @@ def display_strum_pattern():
                                     last_strum = 2
 
                             elif j == 3:
-                                downstrum_labels[2].config(bg="white",fg="white")
-                                upstrum_labels[2].config(bg="white",fg="white")
+                                #downstrum_labels[2].config(bg="white",fg="white")
+                                #upstrum_labels[2].config(bg="white",fg="white")
+#
+                                #downstrum_labels[3].config(bg="green",fg="green")
+                                #upstrum_labels[3].config(bg="green",fg="green")
 
-                                downstrum_labels[3].config(bg="green",fg="green")
-                                upstrum_labels[3].config(bg="green",fg="green")
+                                strum_labels[i*6+2].config(bg="white",fg="white")
+                                strum_labels[i*6+3].config(bg="green",fg="green")
 
                                 if metroStrumFlag and metroOnFlag:
                                     if last_strum != 3:
@@ -459,11 +465,14 @@ def display_strum_pattern():
                                     last_strum = 3
 
                             elif j == 4:
-                                downstrum_labels[3].config(bg="white",fg="white")
-                                upstrum_labels[3].config(bg="white",fg="white")
+                                #downstrum_labels[3].config(bg="white",fg="white")
+                                #upstrum_labels[3].config(bg="white",fg="white")
+#
+                                #downstrum_labels[4].config(bg="green",fg="green")
+                                #upstrum_labels[4].config(bg="green",fg="green")
 
-                                downstrum_labels[4].config(bg="green",fg="green")
-                                upstrum_labels[4].config(bg="green",fg="green")
+                                strum_labels[i*6+3].config(bg="white",fg="white")
+                                strum_labels[i*6+4].config(bg="green",fg="green")
 
                                 if metroStrumFlag and metroOnFlag:
                                     if last_strum != 4:
@@ -475,11 +484,15 @@ def display_strum_pattern():
                                     last_strum = 4
 
                             elif j == 5:
-                                downstrum_labels[4].config(bg="white",fg="white")
-                                upstrum_labels[4].config(bg="white",fg="white")
+                                #print("in 1")
+                                #downstrum_labels[4].config(bg="white",fg="white")
+                                #upstrum_labels[4].config(bg="white",fg="white")
+#
+                                #downstrum_labels[5].config(bg="green",fg="green")
+                                #upstrum_labels[5].config(bg="green",fg="green")
 
-                                downstrum_labels[5].config(bg="green",fg="green")
-                                upstrum_labels[5].config(bg="green",fg="green")
+                                strum_labels[i*6+4].config(bg="white",fg="white")
+                                strum_labels[i*6+5].config(bg="green",fg="green")
 
                                 if metroStrumFlag and metroOnFlag:
                                     if last_strum != 5:
@@ -490,12 +503,16 @@ def display_strum_pattern():
                                     
                                     last_strum = 5
 
-                    if music_time < strums[i*6+6].start and music_time >= strums[i*6+5].start:
-                        downstrum_labels[4].config(bg="white",fg="white")
-                        upstrum_labels[4].config(bg="white",fg="white")
+                    if music_time < (strums[i*6+6].start * 1000 // 10) and music_time >= (strums[i*6+5].start * 1000 // 10):
+                        #print("in 2")
+                        #downstrum_labels[4].config(bg="white",fg="white")
+                        #upstrum_labels[4].config(bg="white",fg="white")
+#
+                        #downstrum_labels[5].config(bg="green",fg="green")
+                        #upstrum_labels[5].config(bg="green",fg="green")
 
-                        downstrum_labels[5].config(bg="green",fg="green")
-                        upstrum_labels[5].config(bg="green",fg="green")
+                        strum_labels[i*6+4].config(bg="white",fg="white")
+                        strum_labels[i*6+5].config(bg="green",fg="green")
 
                         if metroStrumFlag and metroOnFlag:
                             if last_strum != 5:
@@ -549,18 +566,18 @@ def display_sliding_strum_pattern():
     if soundFile:
         strumHitTriangle.place(x=410,y=375)
 
-        print("Counter: ", isSlidingDisplayPressed)
+        #print("Counter: ", isSlidingDisplayPressed)
         if(isSlidingDisplayPressed > 1):
             for j in range(len(strum_labels)):
                 strum_labels[j].place(x=1550,y=2000)
                 strum_labels[j].config(bg="white",fg="white")
                 
         root.update()
-        print(int(spf*1000))
-        while mixer.music.get_pos() != -1 and mixer.music.get_pos() < strums[len(strums)-1].start * 1000 + 1:
+        #print(int(spf*1000))
+        while mixer.music.get_pos() != -1 and mixer.music.get_pos() < strums[len(strums)-1].start * 1000 + 1 and slidingFlag == 1:
             sliding_animation()
             clock.tick(60)
-            print(clock.get_fps())
+            #print(clock.get_fps())
         
         
 
