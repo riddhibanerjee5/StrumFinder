@@ -456,6 +456,8 @@ def sliding_animation():
     global displayStrumFlag
     global strum_pixel_hit
     global strums
+    global metroOnFlag
+    global metroStrumFlag
 
     window_width = root.winfo_screenwidth()
     music_time = mixer.music.get_pos() // 10
@@ -467,6 +469,13 @@ def sliding_animation():
             strum_labels[i].place(x=x_pixel,y=450)
             if x_pixel <= strum_pixel_hit:
                 strum_labels[i].config(bg="green",fg="green")
+
+            if x_pixel - strum_pixel_hit < 5 and x_pixel - strum_pixel_hit > -5:
+                if metroStrumFlag and metroOnFlag:
+                    if strums[i].strum:
+                        metro.strum('up')
+                    else:
+                        metro.strum('down')
 
     root.update()
 
