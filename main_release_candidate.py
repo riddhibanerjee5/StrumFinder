@@ -176,6 +176,7 @@ def play():
             mixer.music.play()
         root.update()
         
+        print(slidingFlag)
         if displayStrumFlag:
             display_strum_pattern()
         elif slidingFlag:
@@ -201,7 +202,6 @@ def pause():
 
     pauseFlag = 1
     playFlag = 0
-    slidingFlag = 0
 
 def restart():
     global pauseFlag
