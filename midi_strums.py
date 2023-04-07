@@ -153,7 +153,7 @@ def generateStrums(filename, combine):
         start_index = 0
         n = notes.size
         for i in range(len(notes[0:n])):
-            if (notes[i].start - notes[i-1].start > 0.01 and i > 0):
+            if (notes[i].start - notes[i-1].start > 0.1 and i > 0):
                 end = notes[i-1]
                 end_index = i-1
                 chordNotes = notes[start_index:end_index+1]
