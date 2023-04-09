@@ -49,7 +49,7 @@ soundFile = None
 slidingFlag = 0
 displayStrumFlag = 0
 generateStrumPressCounter = 0
-strum_labels = None
+strum_labels = list()
 start_display_strum = None
 screen_width = root.winfo_screenwidth()
 strum_pixel_hit = 400
@@ -72,8 +72,8 @@ isSlidingDisplayPressed = 0
 #label = Label(frame, image=sound_wave_img)
 # label.pack()
 
-upstrum = ImageTk.PhotoImage(Image.open("./images/uparrow.png"))
-downstrum = ImageTk.PhotoImage(Image.open("./images/downarrow.png"))
+upstrum = ImageTk.PhotoImage(Image.open("./images/uparrow_edit.jpg"))
+downstrum = ImageTk.PhotoImage(Image.open("./images/downarrow_edit.jpg"))
 select_file_image = ImageTk.PhotoImage(Image.open("./images/select_file.png"))
 play_button_image = ImageTk.PhotoImage(Image.open("./images/play-green.png").resize((75,75)))
 pause_button_image = ImageTk.PhotoImage(Image.open("./images/pause-green.png").resize((75,75)))
@@ -100,7 +100,6 @@ def openFile():
     global start_display_strum
     global strum_pixel_hit
 
-    strum_labels = list(list())
     select_file_button.configure(bg="green")
     play_button.configure(bg=["white"])
     stop_button.configure(bg=["white"])
@@ -118,26 +117,28 @@ def openFile():
     strums = generateStrums(soundFile, True)
     iter2 = len(strums)//6
 
-    delay = 3
-    
+    delay = 2.7
     if len(strum_labels) != 0:
         for strum in strum_labels:
             strum.place(x=6000,y=450)
+        root.update()
 
     for i in range(0,len(strums)):
-        if(strums[i].strum == False):
-            strum_labels.append(Label(image=downstrum,height=100,width=100))
-            strum_labels[i].image = downstrum
-            strum_labels[i].config(bg="white", fg="white")
-            start_display_strum.append(int((strums[i].start - delay) * 1000 // 10))
-            #print(strums[i].start)
-            #print(strums[i].start - time_across_screen)
-   
-        else:
-            strum_labels.append(Label(image=upstrum,height=100,width=100))
-            strum_labels[i].image = upstrum
-            strum_labels[i].config(bg="white", fg="white")
-            start_display_strum.append(int((strums[i].start - delay) * 1000 // 10))
+        print(len(strums[i].notes))
+        if(len(strums[i].notes) > 2):
+            if(strums[i].strum == False):
+                strum_labels.append(Label(image=downstrum,height=100,width=34))
+                strum_labels[len(strum_labels)-1].image = downstrum
+                strum_labels[len(strum_labels)-1].config(bg="white", fg="white")
+                start_display_strum.append(int((strums[i].start - delay) * 1000 // 10))
+                #print(strums[ i].start)
+                #print(strums[i].start - time_across_screen)
+    
+            else:
+                strum_labels.append(Label(image=upstrum,height=100,width=34))
+                strum_labels[len(strum_labels)-1].image = upstrum
+                strum_labels[len(strum_labels)-1].config(bg="white", fg="white")
+                start_display_strum.append(int((strums[i].start - delay) * 1000 // 10))
 
     
 

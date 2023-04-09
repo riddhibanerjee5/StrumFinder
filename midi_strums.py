@@ -104,6 +104,11 @@ class Chord():
                 for i in names:
                     chordName += i
 
+        else:
+            chordName = ""
+            for i in names:
+                chordName += i
+
         self.chord_name = chordName
         return chordName
 
@@ -144,38 +149,39 @@ def generateStrums(filename, combine):
                 combined.notes.append(note)
         x.instruments = [combined]
 
-    for instrument in x.instruments:
-        notes = np.array(instrument.notes)
-        indices = np.argsort([note.start for note in notes])
-        notes = notes[indices]
-        
-        start = notes[0]
-        start_index = 0
-        n = notes.size
-        for i in range(len(notes[0:n])):
-            if (notes[i].start - notes[i-1].start > 0.1 and i > 0):
-                end = notes[i-1]
-                end_index = i-1
-                chordNotes = notes[start_index:end_index+1]
-                if (start.pitch < end.pitch):
-                    chord = Chord(start.start,False,chordNotes)
-                    chord.determineChord(chord)
-                    chords = np.append(chords, chord)
-                else:
-                    chord = Chord(start.start,True,chordNotes)
-                    chord.determineChord(chord)
-                    chords = np.append(chords, chord)
-                start = notes[i]
-                start_index = i
+    #for instrument in x.instruments:
+    instrument = x.instruments[0]
+    notes = np.array(instrument.notes)
+    indices = np.argsort([note.start for note in notes])
+    notes = notes[indices]
+    
+    start = notes[0]
+    start_index = 0
+    n = notes.size
+    for i in range(len(notes[0:n])):
+        if (notes[i].start - notes[i-1].start > 0.1 and i > 0):
+            end = notes[i-1]
+            end_index = i-1
+            chordNotes = notes[start_index:end_index+1]
+            if (start.pitch <= end.pitch):
+                chord = Chord(start.start,False,chordNotes)
+                chord.determineChord(chord)
+                chords = np.append(chords, chord)
+            else:
+                chord = Chord(start.start,True,chordNotes)
+                chord.determineChord(chord)
+                chords = np.append(chords, chord)
+            start = notes[i]
+            start_index = i
 
-        chordNotes = notes[start_index:n]
-        if (start.pitch < notes[n-1].pitch):
-            chord = Chord(start.start,False,chordNotes)
-            chord.determineChord(chord)
-            chords = np.append(chords, chord)
-        else:
-            chord = Chord(start.start,True,chordNotes)
-            chord.determineChord(chord)
-            chords = np.append(chords, chord)
+    chordNotes = notes[start_index:n]
+    if (start.pitch <= notes[n-1].pitch):
+        chord = Chord(start.start,False,chordNotes)
+        chord.determineChord(chord)
+        chords = np.append(chords, chord)
+    else:
+        chord = Chord(start.start,True,chordNotes)
+        chord.determineChord(chord)
+        chords = np.append(chords, chord)
 
     return chords
