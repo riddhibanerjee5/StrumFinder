@@ -72,8 +72,8 @@ isSlidingDisplayPressed = 0
 #label = Label(frame, image=sound_wave_img)
 # label.pack()
 
-upstrum = ImageTk.PhotoImage(Image.open("./images/uparrow_edit.jpg"))
-downstrum = ImageTk.PhotoImage(Image.open("./images/downarrow_edit.jpg"))
+upstrum = ImageTk.PhotoImage(Image.open("./images/uparrow_edit2.jpg"))
+downstrum = ImageTk.PhotoImage(Image.open("./images/downarrow_edit2.jpg"))
 select_file_image = ImageTk.PhotoImage(Image.open("./images/select_file.png"))
 play_button_image = ImageTk.PhotoImage(Image.open("./images/play-green.png").resize((75,75)))
 pause_button_image = ImageTk.PhotoImage(Image.open("./images/pause-green.png").resize((75,75)))
@@ -117,17 +117,17 @@ def openFile():
     strums = generateStrums(soundFile, True)
     iter2 = len(strums)//6
 
-    delay = 2.7
+    delay = 2.6
     if len(strum_labels) != 0:
         for strum in strum_labels:
             strum.place(x=6000,y=450)
         root.update()
 
     for i in range(0,len(strums)):
-        print(len(strums[i].notes))
+        #print(len(strums[i].notes))
         if(len(strums[i].notes) > 2):
             if(strums[i].strum == False):
-                strum_labels.append(Label(image=downstrum,height=100,width=34))
+                strum_labels.append(Label(image=downstrum,height=99,width=61))
                 strum_labels[len(strum_labels)-1].image = downstrum
                 strum_labels[len(strum_labels)-1].config(bg="white", fg="white")
                 start_display_strum.append(int((strums[i].start - delay) * 1000 // 10))
@@ -135,7 +135,7 @@ def openFile():
                 #print(strums[i].start - time_across_screen)
     
             else:
-                strum_labels.append(Label(image=upstrum,height=100,width=34))
+                strum_labels.append(Label(image=upstrum,height=99,width=61))
                 strum_labels[len(strum_labels)-1].image = upstrum
                 strum_labels[len(strum_labels)-1].config(bg="white", fg="white")
                 start_display_strum.append(int((strums[i].start - delay) * 1000 // 10))
