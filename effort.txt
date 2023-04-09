@@ -75,7 +75,11 @@ Riddhi
 		to int32
 			(3 hrs)
 - 3/21: Fixing bugs that arise from edge test cases and working on sliding strum display
-			(5 hrs)
+			(8 hrs)
+- 3/22: Create a generic sliding display algorithm for the strums
+			(3 hrs)
+- 3/23: Fix up many bugs and add triangle marker for sliding display of strums
+			(6 hrs)
 
 Kendall
  - 11/1 & 11/2: researched serial communication and made program in 
