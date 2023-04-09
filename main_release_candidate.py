@@ -50,7 +50,7 @@ slidingFlag = 0
 displayStrumFlag = 0
 generateStrumPressCounter = 0
 strum_labels = list()
-start_display_strum = None
+start_display_strum = list()
 screen_width = root.winfo_screenwidth()
 strum_pixel_hit = 400
 fps = 15
@@ -115,13 +115,15 @@ def openFile():
     playSound = mixer.music.load(soundFile)
     
     strums = generateStrums(soundFile, True)
-    iter2 = len(strums)//6
 
     delay = 2.6
     if len(strum_labels) != 0:
         for strum in strum_labels:
             strum.place(x=6000,y=450)
         root.update()
+
+    start_display_strum.clear()
+    strum_labels.clear()
 
     for i in range(0,len(strums)):
         #print(len(strums[i].notes))
