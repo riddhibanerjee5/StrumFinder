@@ -156,7 +156,7 @@ def play():
             mixer.music.play()
         root.update()
         
-        print(slidingFlag)
+        #print(slidingFlag)
         if displayStrumFlag:
             display_strum_pattern()
         elif slidingFlag:
