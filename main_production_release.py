@@ -106,6 +106,7 @@ def openFile():
     strum_labels.clear()
     strums_updated.clear()
 
+    j=0
     for i in range(0,len(strums)):
         #print(len(strums[i].notes))
         if(len(strums[i].notes) > 2):
@@ -115,8 +116,7 @@ def openFile():
                 strum_labels[len(strum_labels)-1].config(bg="white", fg="white")
                 start_display_strum.append(int((strums[i].start - delay) * 1000 // 10))
                 strums_updated.append(strums[i])
-                #print(strums[ i].start)
-                #print(strums[i].start - time_across_screen)
+                #print("j: ", j, ", start: ", strums[i].start, ", notes: ", len(strums[i].notes), ", i: ", i)
     
             else:
                 strum_labels.append(Label(image=upstrum,height=99,width=61))
@@ -124,6 +124,7 @@ def openFile():
                 strum_labels[len(strum_labels)-1].config(bg="white", fg="white")
                 start_display_strum.append(int((strums[i].start - delay) * 1000 // 10))
                 strums_updated.append(strums[i])
+                #print("j: ", j, ", start: ", strums[i].start, ", notes: ", len(strums[i].notes), ", i: ", i)
 
     
 def play():
@@ -222,6 +223,8 @@ def serial():
 
 def metronome_en():
     global metroOnFlag
+    global playFlag
+    global metroStrumFlag
 
     if metroOnFlag:
         metroOnFlag = 0
@@ -238,6 +241,10 @@ def metronome_en():
                 metro.set_bpm(metro.calculate_bpm(soundFile))
             else:
                 metro.set_bpm(getMidiBpm(soundFile))
+
+    songTime = mixer.music.get_pos() // 10
+    if playFlag and metroOnFlag and not metroStrumFlag:
+        metro.unpause(getMidiBpm(soundFile), songTime)
 
     root.update()
     
@@ -456,8 +463,9 @@ def sliding_animation():
                 strum_labels[i].config(bg="green",fg="green")
 
             if x_pixel - strum_pixel_hit < 5 and x_pixel - strum_pixel_hit > -5:
+                #print("i: ", i, ", start: ", strums_updated[i].start, ", notes: ", len(strums_updated[i].notes), ", chord: ", strums_updated[i].chord_name)
                 if metroStrumFlag and metroOnFlag:
-                    if strums[i].strum:
+                    if strums_updated[i].strum:
                         metro.strum('up')
                     else:
                         metro.strum('down')
