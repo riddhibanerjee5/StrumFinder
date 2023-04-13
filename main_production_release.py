@@ -52,6 +52,7 @@ fps = 15
 spf = 1 / fps
 time_across_screen = 0
 start_display_strum = list()
+strums_updated = list()
 isSlidingDisplayPressed = 0
 
 ################################################ Images ##########################################################################
@@ -103,6 +104,7 @@ def openFile():
 
     start_display_strum.clear()
     strum_labels.clear()
+    strums_updated.clear()
 
     for i in range(0,len(strums)):
         #print(len(strums[i].notes))
@@ -112,6 +114,7 @@ def openFile():
                 strum_labels[len(strum_labels)-1].image = downstrum
                 strum_labels[len(strum_labels)-1].config(bg="white", fg="white")
                 start_display_strum.append(int((strums[i].start - delay) * 1000 // 10))
+                strums_updated.append(strums[i])
                 #print(strums[ i].start)
                 #print(strums[i].start - time_across_screen)
     
@@ -120,6 +123,7 @@ def openFile():
                 strum_labels[len(strum_labels)-1].image = upstrum
                 strum_labels[len(strum_labels)-1].config(bg="white", fg="white")
                 start_display_strum.append(int((strums[i].start - delay) * 1000 // 10))
+                strums_updated.append(strums[i])
 
     
 def play():
@@ -272,7 +276,7 @@ def display_strum_pattern():
                 strum_labels[j].place(x=1550,y=2000)
                 strum_labels[j].config(bg="white",fg="white")
             
-            iter = len(strums) // 6
+            iter = len(strums_updated) // 6
             
             #print("Iter: ", iter)
             last_strum = -1
@@ -290,18 +294,18 @@ def display_strum_pattern():
                 root.update()
                     
                 #print('playFlag: ', playFlag, ', music time: ', music_time, ', strums[5]: ', strums[i*6+5].start)
-                while(playFlag and music_time < (strums[i*6+6].start * 1000 // 10) and displayStrumFlag == 1):
+                while(playFlag and music_time < (strums_updated[i*6+6].start * 1000 // 10) and displayStrumFlag == 1):
                     music_time = mixer.music.get_pos() // 10
 
                     for j in range(0, 5):
-                        if music_time < (strums[i*6+j+1].start * 1000 // 10) and music_time >= (strums[i*6+j].start * 1000 // 10):
+                        if music_time < (strums_updated[i*6+j+1].start * 1000 // 10) and music_time >= (strums_updated[i*6+j].start * 1000 // 10):
                             if j == 0:
                                 strum_labels[i*6+5].config(bg="white",fg="white")
                                 strum_labels[i*6+0].config(bg="green",fg="green")
 
                                 if metroOnFlag and metroStrumFlag:
                                     if last_strum != 0:
-                                        if strums[i*6].strum:
+                                        if strums_updated[i*6].strum:
                                             metro.strum('up')
                                         else:
                                             metro.strum('down')
@@ -314,7 +318,7 @@ def display_strum_pattern():
 
                                 if metroStrumFlag and metroOnFlag:
                                     if last_strum != 1:
-                                        if strums[i*6+1].strum:
+                                        if strums_updated[i*6+1].strum:
                                             metro.strum('up')
                                         else:
                                             metro.strum('down')
@@ -327,7 +331,7 @@ def display_strum_pattern():
 
                                 if metroStrumFlag and metroOnFlag:
                                     if last_strum != 2:
-                                        if strums[i*6+2].strum:
+                                        if strums_updated[i*6+2].strum:
                                             metro.strum('up')
                                         else:
                                             metro.strum('down')
@@ -340,7 +344,7 @@ def display_strum_pattern():
 
                                 if metroStrumFlag and metroOnFlag:
                                     if last_strum != 3:
-                                        if strums[i*6+3].strum:
+                                        if strums_updated[i*6+3].strum:
                                             metro.strum('up')
                                         else:
                                             metro.strum('down')
@@ -353,7 +357,7 @@ def display_strum_pattern():
 
                                 if metroStrumFlag and metroOnFlag:
                                     if last_strum != 4:
-                                        if strums[i*6+4].strum:
+                                        if strums_updated[i*6+4].strum:
                                             metro.strum('up')
                                         else:
                                             metro.strum('down')
@@ -366,25 +370,26 @@ def display_strum_pattern():
 
                                 if metroStrumFlag and metroOnFlag:
                                     if last_strum != 5:
-                                        if strums[i*6+5].strum:
+                                        if strums_updated[i*6+5].strum:
                                             metro.strum('up')
                                         else:
                                             metro.strum('down')
                                     
                                     last_strum = 5
 
-                    if music_time < (strums[i*6+6].start * 1000 // 10) and music_time >= (strums[i*6+5].start * 1000 // 10):
+                    if music_time < (strums_updated[i*6+6].start * 1000 // 10) and music_time >= (strums_updated[i*6+5].start * 1000 // 10):
                         strum_labels[i*6+4].config(bg="white",fg="white")
                         strum_labels[i*6+5].config(bg="green",fg="green")
 
                         if metroStrumFlag and metroOnFlag:
                             if last_strum != 5:
-                                if strums[i*6+5].strum:
+                                if strums_updated[i*6+5].strum:
                                     metro.strum('up')
                                 else:
                                     metro.strum('down')
                             
                             last_strum = 5
+
 
                     root.update()
 
